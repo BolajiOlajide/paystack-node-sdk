@@ -1,0 +1,32 @@
+{
+  "name": "paystack-sdk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "paystack",
+    "sdk",
+    "money",
+    "fintech"
+  ],
+  "author": {
+    "name": "Bolaji Olajide",
+    "url": "https://bolaji.de"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "typescript": "^5.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BolajiOlajide/paystack-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BolajiOlajide/paystack-sdk/issues"
+  },
+  "homepage": "https://github.com/BolajiOlajide/paystack-sdk"
+}
