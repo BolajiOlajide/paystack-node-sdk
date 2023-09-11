@@ -1,5 +1,5 @@
 {
-  "name": "paystack-sdk",
+  "name": "paystack-node",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -23,10 +23,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BolajiOlajide/paystack-sdk.git"
+    "url": "git://github.com/BolajiOlajide/paystack-node.git"
   },
   "bugs": {
-    "url": "https://github.com/BolajiOlajide/paystack-sdk/issues"
+    "url": "https://github.com/BolajiOlajide/paystack-node/issues"
   },
-  "homepage": "https://github.com/BolajiOlajide/paystack-sdk"
+  "homepage": "https://github.com/BolajiOlajide/paystack-node"
 }
