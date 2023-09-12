@@ -19,6 +19,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.6.0",
+    "@types/node-fetch": "2",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "repository": {
@@ -28,5 +30,9 @@
   "bugs": {
     "url": "https://github.com/BolajiOlajide/paystack-node/issues"
   },
-  "homepage": "https://github.com/BolajiOlajide/paystack-node"
+  "homepage": "https://github.com/BolajiOlajide/paystack-node",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "zod": "^3.22.2"
+  }
 }
