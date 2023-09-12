@@ -1,5 +1,3 @@
 class ApplePay {
-  registerDomain(domain: string) {
-
-  }
+  registerDomain(domain: string) {}
 }

@@ -1,0 +1,6 @@
+node_modules
+dist
+
+# Ignore artifacts:
+coverage
+*-lock.{json,yml,yaml}
