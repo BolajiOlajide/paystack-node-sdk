@@ -5,7 +5,7 @@ export const httpClientSchema = z.object({
   secretKey: z.string().trim(),
 });
 
-export type httpClientArgs = z.infer<typeof httpClientSchema>
+export type httpClientArgs = z.infer<typeof httpClientSchema>;
 
 const httpMethodSchema = z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']);
 

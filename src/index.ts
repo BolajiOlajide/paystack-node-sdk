@@ -1,4 +1,4 @@
-import { paystackSchema } from './schema/paystack';
+import { paystackSchema } from './schema/paystack.schema';
 
 interface PaystackArgs {
   apiKey: string;
@@ -16,7 +16,7 @@ class Paystack {
     paystackSchema.parse(opts);
 
     this.apiKey = opts.apiKey;
-    this.baseUrl = (opts.baseUrl && opts.baseUrl !== '') ? opts.baseUrl : 'https://api.paystack.co';
+    this.baseUrl = opts.baseUrl && opts.baseUrl !== '' ? opts.baseUrl : 'https://api.paystack.co';
   }
 }
 
