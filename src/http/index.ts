@@ -27,7 +27,5 @@ export function createHTTPClient(baseURL: string, secretKey: string, config?: Ax
     },
   });
 
-  // client.interceptors.response = f
-
   return client;
 }
