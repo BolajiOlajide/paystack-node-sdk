@@ -3,23 +3,23 @@ import { mock } from 'jest-mock-extended';
 
 import { CREATE_PLAN_ENDPOINT } from '../../constants';
 import { ValidationError } from '../../error/validation.error';
-import { mockPlan } from '../../fixtures/subscription.fixture';
+import { mockPlan } from '../../fixtures/plan.fixture';
 import { StatusCodes } from '../../utils/status.util';
-import Subscription from '../subscription.module';
+import Plan from '../plan.module';
 
 jest.mock('axios');
 
-describe('Subscription', () => {
+describe('Plan', () => {
   const mockedAxios = mock<AxiosInstance>();
   const axiosPostSpy = jest.spyOn(mockedAxios, 'post');
 
-  const s = new Subscription(mockedAxios);
+  const planModule = new Plan(mockedAxios);
 
   describe('createPlan', () => {
     it('should throw error if plan amount is less than or equal to zero', async () => {
       const expected = new ValidationError('amount must be greater than 0');
       await expect(
-        s.createPlan({
+        planModule.create({
           name: 'Plan Name',
           amount: -10000,
           interval: 'monthly',
@@ -32,7 +32,7 @@ describe('Subscription', () => {
     it('should throw error if name is an empty string', async () => {
       const expected = new ValidationError('name must be a non-empty string');
       await expect(
-        s.createPlan({
+        planModule.create({
           name: '',
           amount: 10000,
           interval: 'monthly',
@@ -42,7 +42,7 @@ describe('Subscription', () => {
       expect(axiosPostSpy).not.toBeCalled();
     });
 
-    it('should create subscription plan', async () => {
+    it('should create plan', async () => {
       axiosPostSpy.mockResolvedValueOnce({
         status: StatusCodes.CREATED,
         data: {
@@ -50,7 +50,7 @@ describe('Subscription', () => {
           data: mockPlan,
         },
       });
-      const plan = await s.createPlan({
+      const plan = await planModule.create({
         name: 'Plan Name',
         amount: 10000,
         interval: 'monthly',

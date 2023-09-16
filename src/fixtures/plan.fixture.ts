@@ -1,4 +1,4 @@
-import type { Plan } from '../schema/subscription.schema';
+import type { Plan } from '../schema/plan.schema';
 
 export const mockPlan: Plan = {
   name: 'test Plan',
