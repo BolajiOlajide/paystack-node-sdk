@@ -1,11 +1,7 @@
-import dotenv from 'dotenv';
+import { ps } from './paystack';
 
-import Paystack from '../src';
-
-dotenv.config();
-
-const ps = new Paystack({ secretKey: process.env.PAYSTACK_API_KEY as string });
-
+// This will create a new plan for subscriptions.
+// If there's an error it'll log the error message to the console.
 ps.plan
   .createPlan({ name: 'Plan Name', amount: 10000, interval: 'monthly' })
   .then(console.log)
