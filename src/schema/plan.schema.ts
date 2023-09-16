@@ -2,24 +2,13 @@ import { z } from 'zod';
 
 import { createAPIResponseSchema } from '../schema/paystack.schema';
 
-export const planIntervalSchema = z.enum([
-  'hourly',
-  'daily',
-  'weekly',
-  'monthly',
-  'quarterly',
-  'bianually',
-  'annually',
-]);
-
-export type PlanInterval = z.infer<typeof planIntervalSchema>;
+const planIntervalSchema = z.enum(['hourly', 'daily', 'weekly', 'monthly', 'quarterly', 'bianually', 'annually']);
 
 export const createPlanArgsSchema = z.object({
   name: z.string(),
   amount: z.number().positive(),
   interval: planIntervalSchema,
 });
-
 export type CreatePlanArgs = z.infer<typeof createPlanArgsSchema>;
 
 const planSchema = z.object({
@@ -40,9 +29,7 @@ const planSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
 });
-
 export type Plan = z.infer<typeof planSchema>;
 
 export const createPlanResponseSchema = createAPIResponseSchema(z.object({ data: planSchema }));
-
 export type CreatePlanResponse = z.infer<typeof createPlanResponseSchema>;
