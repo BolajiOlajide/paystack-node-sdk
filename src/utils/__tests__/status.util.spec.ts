@@ -1,6 +1,6 @@
 import { isNonErrorResponse } from '../status.util';
 
-describe('status util', () => {
+describe('statusUtil', () => {
   describe('isNonErrorResponse', () => {
     it('should return true for status codes >= 100 and < 400', () => {
       expect(isNonErrorResponse(100)).toBe(true);

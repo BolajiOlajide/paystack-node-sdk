@@ -9,7 +9,7 @@ import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
  * @returns {AxiosInstance} The configured Axios HTTP client instance.
  */
 export function createHTTPClient(baseURL: string, secretKey: string, config?: AxiosRequestConfig) {
-  return axios.create({
+  const client = axios.create({
     // We don't want the baseURL and authorization config to be overwritten
     baseURL,
     // We don't want to reject requests with a status code greater than 400.
@@ -26,4 +26,8 @@ export function createHTTPClient(baseURL: string, secretKey: string, config?: Ax
       Authorization: `Bearer ${secretKey}`,
     },
   });
+
+  // client.interceptors.response = f
+
+  return client;
 }

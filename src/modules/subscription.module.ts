@@ -8,7 +8,15 @@ import {
   type Plan,
 } from '../schema/subscription.schema';
 import { isNonErrorResponse } from '../utils/status.util';
+import { handleError } from '../error';
 
+/**
+ * The Subscriptions API lets developers embed recurring billing functionality in their applications,
+ * without having to manage the billing cycle themselves. Merchants can easily create plans and
+ * charge customers automatically, on a recurring basis.
+ *
+ * https://paystack.com/docs/payments/subscriptions/
+ */
 class SubscriptionModule {
   private httpClient: AxiosInstance;
 
@@ -16,6 +24,14 @@ class SubscriptionModule {
     this.httpClient = httpClient;
   }
 
+  /**
+   * Plans are the foundational building block for subscriptions.
+   * A plan represents what you're selling, how much you're selling it for,
+   * and how often you're charging for it.
+   *
+   * @param {CreatePlanArgs} args
+   * @returns {Plan} Plan object representing the newly created plan.
+   */
   async createPlan(args: CreatePlanArgs): Promise<Plan> {
     try {
       createPlanArgsSchema.parse(args);
@@ -32,8 +48,7 @@ class SubscriptionModule {
 
       return Promise.reject({ message: data.message });
     } catch (err) {
-      const errMsg = typeof err === 'string' ? err : (err as Error).message;
-      return Promise.reject({ message: errMsg || 'an unknown error occurred' });
+      return handleError(err);
     }
   }
 }
