@@ -3,12 +3,15 @@ import { AxiosInstance } from 'axios';
 import { createHTTPClient } from './http';
 import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
 
+// modules
+import Plan from './modules/plan.module';
+
 class Paystack {
   private secretKey: string;
   private baseUrl: string;
   private httpClient: AxiosInstance;
 
-  // public subscriptions:
+  public plan: Plan;
 
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
@@ -16,11 +19,9 @@ class Paystack {
     this.secretKey = opts.secretKey;
     this.baseUrl = opts.baseUrl && opts.baseUrl !== '' ? opts.baseUrl : 'https://api.paystack.co';
     this.httpClient = createHTTPClient(this.baseUrl, this.secretKey);
-    this.registerModules();
-  }
 
-  registerModules() {
-    // this.su
+    // register modules
+    this.plan = new Plan(this.httpClient);
   }
 }
 

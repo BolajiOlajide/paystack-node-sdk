@@ -41,6 +41,8 @@ const planSchema = z.object({
   updatedAt: z.string(),
 });
 
+export type Plan = z.infer<typeof planSchema>;
+
 export const createPlanResponseSchema = createAPIResponseSchema(z.object({ data: planSchema }));
 
 export type CreatePlanResponse = z.infer<typeof createPlanResponseSchema>;
