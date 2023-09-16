@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { createAPIResponseSchema } from '../schema/paystack.schema';
+import { createAPIResponseSchema } from './paystack.schema';
 
 const planIntervalSchema = z.enum(['hourly', 'daily', 'weekly', 'monthly', 'quarterly', 'bianually', 'annually']);
 

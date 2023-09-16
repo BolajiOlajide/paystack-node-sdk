@@ -5,18 +5,18 @@ import {
   type CreatePlanArgs,
   createPlanArgsSchema,
   type CreatePlanResponse,
-  type Plan as SubscriptionPlan,
-} from '../schema/plan.schema';
+  type Plan,
+} from '../schema/subscription.schema';
 import { isNonErrorResponse } from '../utils/status.util';
 
-class Plan {
+class SubscriptionModule {
   private httpClient: AxiosInstance;
 
   constructor(httpClient: AxiosInstance) {
     this.httpClient = httpClient;
   }
 
-  async createPlan(args: CreatePlanArgs): Promise<SubscriptionPlan> {
+  async createPlan(args: CreatePlanArgs): Promise<Plan> {
     try {
       createPlanArgsSchema.parse(args);
 
@@ -38,4 +38,4 @@ class Plan {
   }
 }
 
-export default Plan;
+export default SubscriptionModule;

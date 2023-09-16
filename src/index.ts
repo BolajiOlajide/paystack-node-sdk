@@ -4,14 +4,14 @@ import { createHTTPClient } from './http';
 import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
 
 // modules
-import Plan from './modules/plan.module';
+import Subscription from './modules/subscription.module';
 
 class Paystack {
   private secretKey: string;
   private baseUrl: string;
   private httpClient: AxiosInstance;
 
-  public plan: Plan;
+  public subscription: Subscription;
 
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
@@ -21,7 +21,7 @@ class Paystack {
     this.httpClient = createHTTPClient(this.baseUrl, this.secretKey);
 
     // register modules
-    this.plan = new Plan(this.httpClient);
+    this.subscription = new Subscription(this.httpClient);
   }
 }
 
