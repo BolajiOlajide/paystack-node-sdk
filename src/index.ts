@@ -18,7 +18,7 @@ class Paystack {
     paystackSchema.parse(opts);
 
     this.secretKey = opts.secretKey;
-    this.baseUrl = opts.baseUrl && opts.baseUrl !== '' ? opts.baseUrl : PAYSTACK_BASE_API_URL;
+    this.baseUrl = opts.baseUrl || PAYSTACK_BASE_API_URL;
     this.httpClient = createHTTPClient(this.baseUrl, this.secretKey);
 
     // register modules
