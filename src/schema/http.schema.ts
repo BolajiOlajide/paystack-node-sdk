@@ -14,7 +14,6 @@ export type httpMethod = z.infer<typeof httpMethodSchema>;
 const requestArgsSchema = z.object({
   endpoint: z.string(),
   method: httpMethodSchema,
-  // headers: z.nullable(z.object()),
 });
 
 export type requestArgs = z.infer<typeof requestArgsSchema>;

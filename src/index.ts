@@ -1,22 +1,26 @@
-import { paystackSchema } from './schema/paystack.schema';
+import { AxiosInstance } from 'axios';
 
-interface PaystackArgs {
-  apiKey: string;
-
-  // You can set your payment URL here if you're using a proxy
-  // for paystack. The default is https://api.paystack.co
-  baseUrl?: string;
-}
+import { PAYSTACK_BASE_API_URL } from './constants';
+import { createHTTPClient } from './http';
+import Subscription from './modules/subscription.module';
+import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
 
 class Paystack {
-  private apiKey: string;
+  private secretKey: string;
   private baseUrl: string;
+  private httpClient: AxiosInstance;
+
+  public subscription: Subscription;
 
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
 
-    this.apiKey = opts.apiKey;
-    this.baseUrl = opts.baseUrl && opts.baseUrl !== '' ? opts.baseUrl : 'https://api.paystack.co';
+    this.secretKey = opts.secretKey;
+    this.baseUrl = opts.baseUrl || PAYSTACK_BASE_API_URL;
+    this.httpClient = createHTTPClient(this.baseUrl, this.secretKey);
+
+    // register modules
+    this.subscription = new Subscription(this.httpClient);
   }
 }
 

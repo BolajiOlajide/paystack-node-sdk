@@ -1,4 +1,4 @@
-import { trimLeadingSlash, trimTrailingSlash } from './trim.util';
+import { trimLeadingSlash, trimTrailingSlash } from '../trim.util';
 
 describe('trimUtil', () => {
   describe('trimTrailingSlash', () => {
