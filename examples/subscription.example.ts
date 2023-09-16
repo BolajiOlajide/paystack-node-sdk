@@ -5,4 +5,4 @@ import { ps } from './paystack';
 ps.subscription
   .createPlan({ name: 'Plan Name', amount: 10000, interval: 'monthly' })
   .then(console.log)
-  .catch((err) => console.error(err.message));
+  .catch((err) => console.error(err));

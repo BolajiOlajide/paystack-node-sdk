@@ -6,13 +6,14 @@ import { CREATE_PLAN_ENDPOINT } from '../../endpoints';
 
 // fixtures
 import { mockPlan } from '../../fixtures/subscription.fixture';
+import { StatusCodes } from '../../utils/status.util';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('Subscription', () => {
   mockedAxios.post.mockResolvedValue({
-    status: 201,
+    status: StatusCodes.CREATED,
     data: {
       status: true,
       data: mockPlan,

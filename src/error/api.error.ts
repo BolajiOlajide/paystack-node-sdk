@@ -1,7 +1,7 @@
-export class ValidationError extends Error {
+export class APIError extends Error {
   constructor(message: string) {
     super();
-    this.name = 'ValidationError';
+    this.name = 'APIError';
     this.message = message;
   }
 }

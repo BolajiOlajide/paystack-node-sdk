@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 
 /**
  * Creates an Axios HTTP client instance configured for use with the Paystack API.
@@ -15,7 +15,7 @@ export function createHTTPClient(baseURL: string, secretKey: string, config?: Ax
     // We don't want to reject requests with a status code greater than 400.
     // This is so that we can properly return the error message received from
     // Paystack.
-    validateStatus: (status: number): boolean => status < 500, // Resolve only if the status code is less than 500
+    // validateStatus: (status: number): boolean => status < 500, // Resolve only if the status code is less than 500
 
     // The configuration above shouldn't be overwritten as they're required for the SDK
     // to work properly.
