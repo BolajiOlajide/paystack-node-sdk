@@ -1,11 +1,9 @@
 import { AxiosInstance } from 'axios';
 
-import { createHTTPClient } from './http';
-import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
 import { PAYSTACK_BASE_API_URL } from './constants';
-
-// modules
+import { createHTTPClient } from './http';
 import Subscription from './modules/subscription.module';
+import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
 
 class Paystack {
   private secretKey: string;

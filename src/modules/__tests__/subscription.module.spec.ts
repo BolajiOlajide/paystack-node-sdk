@@ -1,13 +1,11 @@
 import type { AxiosInstance } from 'axios';
 import { mock } from 'jest-mock-extended';
 
-import Subscription from '../subscription.module';
-import { ValidationError } from '../../error/validation.error';
-
 import { CREATE_PLAN_ENDPOINT } from '../../constants';
-// fixtures
+import { ValidationError } from '../../error/validation.error';
 import { mockPlan } from '../../fixtures/subscription.fixture';
 import { StatusCodes } from '../../utils/status.util';
+import Subscription from '../subscription.module';
 
 jest.mock('axios');
 

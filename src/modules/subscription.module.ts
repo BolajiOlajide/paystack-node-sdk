@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
 import { CREATE_PLAN_ENDPOINT } from '../constants';
+import { handleError } from '../error';
 import {
   type CreatePlanArgs,
   createPlanArgsSchema,
@@ -8,7 +9,6 @@ import {
   type Plan,
 } from '../schema/subscription.schema';
 import { isNonErrorResponse } from '../utils/status.util';
-import { handleError } from '../error';
 
 /**
  * The Subscriptions API lets developers embed recurring billing functionality in their applications,

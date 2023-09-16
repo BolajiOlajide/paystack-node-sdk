@@ -1,11 +1,12 @@
-import { ZodError } from 'zod';
 import { AxiosError } from 'axios';
+import { ZodError } from 'zod';
 
-import { ValidationError } from './validation.error';
 import { StatusCodes } from '../utils/status.util';
-import { UnauthorizedError } from './unauthorized.error';
+
 import { APIError } from './api.error';
 import { RateLimitError } from './ratelimit.error';
+import { UnauthorizedError } from './unauthorized.error';
+import { ValidationError } from './validation.error';
 
 export const handleError = (err: unknown): Promise<never> => {
   if (err instanceof ZodError) {
