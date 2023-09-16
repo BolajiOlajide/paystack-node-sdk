@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import { createHTTPClient } from './http';
 import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
+import { PAYSTACK_BASE_API_URL } from './constants';
 
 // modules
 import Subscription from './modules/subscription.module';
@@ -17,7 +18,7 @@ class Paystack {
     paystackSchema.parse(opts);
 
     this.secretKey = opts.secretKey;
-    this.baseUrl = opts.baseUrl && opts.baseUrl !== '' ? opts.baseUrl : 'https://api.paystack.co';
+    this.baseUrl = opts.baseUrl && opts.baseUrl !== '' ? opts.baseUrl : PAYSTACK_BASE_API_URL;
     this.httpClient = createHTTPClient(this.baseUrl, this.secretKey);
 
     // register modules
