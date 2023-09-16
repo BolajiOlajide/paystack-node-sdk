@@ -1,28 +1,24 @@
-import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+import { mock } from 'jest-mock-extended';
 
 import Subscription from '../subscription.module';
 import { ValidationError } from '../../error/validation.error';
-import { CREATE_PLAN_ENDPOINT } from '../../constants';
 
+import { CREATE_PLAN_ENDPOINT } from '../../constants';
 // fixtures
 import { mockPlan } from '../../fixtures/subscription.fixture';
 import { StatusCodes } from '../../utils/status.util';
 
 jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('Subscription', () => {
-  mockedAxios.post.mockResolvedValue({
-    status: StatusCodes.CREATED,
-    data: {
-      status: true,
-      data: mockPlan,
-    },
-  });
+  const mockedAxios = mock<AxiosInstance>();
+  const axiosPostSpy = jest.spyOn(mockedAxios, 'post');
+
   const s = new Subscription(mockedAxios);
 
   describe('createPlan', () => {
-    it('amount is negative', async () => {
+    it('should throw error if plan amount is less than or equal to zero', async () => {
       const expected = new ValidationError('amount must be greater than 0');
       await expect(
         s.createPlan({
@@ -32,10 +28,10 @@ describe('Subscription', () => {
         })
       ).rejects.toEqual(expected);
 
-      expect(mockedAxios.post).not.toBeCalled();
+      expect(axiosPostSpy).not.toBeCalled();
     });
 
-    it('name is empty string', async () => {
+    it('should throw error if name is an empty string', async () => {
       const expected = new ValidationError('name must be a non-empty string');
       await expect(
         s.createPlan({
@@ -45,22 +41,29 @@ describe('Subscription', () => {
         })
       ).rejects.toEqual(expected);
 
-      expect(mockedAxios.post).not.toBeCalled();
+      expect(axiosPostSpy).not.toBeCalled();
     });
 
-    it('makes request to paystack /plan endpoint', async () => {
+    it('should create subscription plan', async () => {
+      axiosPostSpy.mockResolvedValueOnce({
+        status: StatusCodes.CREATED,
+        data: {
+          status: true,
+          data: mockPlan,
+        },
+      });
       const plan = await s.createPlan({
         name: 'Plan Name',
         amount: 10000,
         interval: 'monthly',
       });
 
-      expect(mockedAxios.post).toBeCalledWith(CREATE_PLAN_ENDPOINT, {
+      expect(axiosPostSpy).toBeCalledWith(CREATE_PLAN_ENDPOINT, {
         name: 'Plan Name',
         amount: 10000,
         interval: 'monthly',
       });
-      expect(mockedAxios.post).toBeCalledTimes(1);
+      expect(axiosPostSpy).toBeCalledTimes(1);
       expect(plan).toEqual(mockPlan);
     });
   });
