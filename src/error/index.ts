@@ -10,6 +10,5 @@ export const handleError = (err: unknown): Promise<never> => {
     return Promise.reject(new ValidationError(firstError.message));
   }
 
-  const errMsg = typeof err === 'string' ? err : (err as Error).message;
-  return Promise.reject({ message: errMsg || 'an unknown error occurred' });
+  return Promise.reject(err);
 };
