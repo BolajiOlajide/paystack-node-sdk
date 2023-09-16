@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import Subscription from '../subscription.module';
 import { ValidationError } from '../../error/validation.error';
-import { CREATE_PLAN_ENDPOINT } from '../../endpoints';
+import { CREATE_PLAN_ENDPOINT } from '../../constants';
 
 // fixtures
 import { mockPlan } from '../../fixtures/subscription.fixture';

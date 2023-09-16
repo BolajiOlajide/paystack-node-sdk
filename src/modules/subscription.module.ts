@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
-import { CREATE_PLAN_ENDPOINT } from '../endpoints';
+import { CREATE_PLAN_ENDPOINT } from '../constants';
 import {
   type CreatePlanArgs,
   createPlanArgsSchema,

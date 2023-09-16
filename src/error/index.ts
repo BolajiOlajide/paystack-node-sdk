@@ -5,6 +5,7 @@ import { ValidationError } from './validation.error';
 import { StatusCodes } from '../utils/status.util';
 import { UnauthorizedError } from './unauthorized.error';
 import { APIError } from './api.error';
+import { RateLimitError } from './ratelimit.error';
 
 export const handleError = (err: unknown): Promise<never> => {
   if (err instanceof ZodError) {
@@ -19,6 +20,8 @@ export const handleError = (err: unknown): Promise<never> => {
       switch (status) {
         case StatusCodes.UNAUTHORIZED:
           return Promise.reject(new UnauthorizedError('invalid secret key'));
+        case StatusCodes.TOO_MANY_REQUESTS:
+          return Promise.reject(new RateLimitError('too many requests'));
         default:
           return Promise.reject(new APIError(data.message));
       }
