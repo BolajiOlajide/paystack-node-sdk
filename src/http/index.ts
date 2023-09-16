@@ -1,5 +1,13 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
+/**
+ * Creates an Axios HTTP client instance configured for use with the Paystack API.
+ *
+ * @param {string} baseURL - The base URL for the Paystack API.
+ * @param {string} secretKey - The secret key to authorize requests.
+ * @param {AxiosRequestConfig} [config] - Additional Axios configuration.
+ * @returns {AxiosInstance} The configured Axios HTTP client instance.
+ */
 export function createHTTPClient(baseURL: string, secretKey: string, config?: AxiosRequestConfig) {
   return axios.create({
     // We don't want the baseURL and authorization config to be overwritten
