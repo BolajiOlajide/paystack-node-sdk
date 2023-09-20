@@ -1,14 +1,12 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
-import { CREATE_PLAN_ENDPOINT } from '../constants';
-import { handleError } from '../error';
 import { type CreatePlanArgs, createPlanArgsSchema, type CreatePlanResponse, type Plan } from '../schema/plan.schema';
-import { isNonErrorResponse } from '../utils/status.util';
 
 import Base from './base.module';
 
 class PlanModule extends Base {
   private httpClient: AxiosInstance;
+  private endpoint: string = '/plan';
 
   constructor(httpClient: AxiosInstance) {
     super();
@@ -26,29 +24,12 @@ class PlanModule extends Base {
   async create(args: CreatePlanArgs): Promise<Plan> {
     return this.wrap(() => {
       createPlanArgsSchema.parse(args);
-
+      console.log(args);
       return this.httpClient.post<CreatePlanResponse, AxiosResponse<CreatePlanResponse>, CreatePlanArgs>(
-        CREATE_PLAN_ENDPOINT,
+        this.endpoint,
         args
       );
     });
-    // try {
-    //   createPlanArgsSchema.parse(args);
-
-    //   const { data, status } = await this.httpClient.post<
-    //     CreatePlanResponse,
-    //     AxiosResponse<CreatePlanResponse>,
-    //     CreatePlanArgs
-    //   >(CREATE_PLAN_ENDPOINT, args);
-
-    //   if (data.status && isNonErrorResponse(status)) {
-    //     return data.data;
-    //   }
-
-    //   return Promise.reject({ message: data.message });
-    // } catch (err) {
-    //   return handleError(err);
-    // }
   }
 }
 

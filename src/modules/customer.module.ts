@@ -1,7 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
-import { CREATE_CUSTOMER_ENDPOINT, LIST_CUSTOMERS_ENDPOINT } from '../constants';
-import { handleError } from '../error';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
@@ -12,12 +10,13 @@ import {
   ListCustomersResponse,
   GetCustomerArgs,
 } from '../schema/customer.schema';
-import { isNonErrorResponse } from '../utils/status.util';
+import { createQueryForURL } from '../utils/query.util';
 
 import Base from './base.module';
 
 class CustomerModule extends Base {
   private httpClient: AxiosInstance;
+  private endpoint: string = '/customer';
 
   constructor(httpClient: AxiosInstance) {
     super();
@@ -29,48 +28,23 @@ class CustomerModule extends Base {
       createCustomerArgsSchema.parse(args);
 
       return this.httpClient.post<CreateCustomerResponse, AxiosResponse<CreateCustomerResponse>, CreateCustomerArgs>(
-        CREATE_CUSTOMER_ENDPOINT,
+        this.endpoint,
         args
       );
     });
-    // try {
-    // createCustomerArgsSchema.parse(args);
-
-    // const { data, status } = await this.httpClient.post<
-    //   CreateCustomerResponse,
-    //   AxiosResponse<CreateCustomerResponse>,
-    //   CreateCustomerArgs
-    // >(CREATE_CUSTOMER_ENDPOINT, args);
-
-    //   if (data.status && isNonErrorResponse(status)) {
-    //     return data.data;
-    //   }
-
-    //   return Promise.reject({ message: data.message });
-    // } catch (err) {
-    //   return handleError(err);
-    // }
   }
 
   async list(args: ListCustomerArgs): Promise<Customer[]> {
-    try {
+    return this.wrap(() => {
       listCustomerArgsSchema.parse(args);
 
-      // TODO: take account of pagination arguments
-      const { data, status } = await this.httpClient.get<
-        ListCustomersResponse,
-        AxiosResponse<ListCustomersResponse>,
-        ListCustomerArgs
-      >(LIST_CUSTOMERS_ENDPOINT, {});
+      const url = createQueryForURL(this.endpoint, args);
 
-      if (data.status && isNonErrorResponse(status)) {
-        return data.data;
-      }
-
-      return Promise.reject({ message: data.message });
-    } catch (err) {
-      return handleError(err);
-    }
+      return this.httpClient.get<ListCustomersResponse, AxiosResponse<ListCustomersResponse>, ListCustomerArgs>(
+        url,
+        {}
+      );
+    });
   }
 
   // async get(args: GetCustomerArgs): Promise<Customer> {

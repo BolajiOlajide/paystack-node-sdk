@@ -80,7 +80,32 @@ const createCustomerResponseSchema = createAPIResponseSchema(z.object({ data: cu
 export type CreateCustomerResponse = z.infer<typeof createCustomerResponseSchema>;
 
 export const listCustomerArgsSchema = z.object({
-  per_page: z.number().optional(),
+  per_page: z
+    .number({
+      invalid_type_error: 'per_page must be a number',
+      description: 'Number of customers to return per page. Default is 50',
+    })
+    .default(50)
+    .optional(),
+  page: z
+    .number({
+      invalid_type_error: 'page must be a number',
+      description: 'Page number for paginated results. Default is 1',
+    })
+    .default(1)
+    .optional(),
+  from: z.coerce
+    .date({
+      invalid_type_error: 'from is not a valid date',
+      description: 'A timestamp from which to start listing customers',
+    })
+    .optional(),
+  to: z.coerce
+    .date({
+      invalid_type_error: 'to is not a valid date',
+      description: 'A timestamp from which to stop listing customers',
+    })
+    .optional(),
 });
 export type ListCustomerArgs = z.infer<typeof listCustomerArgsSchema>;
 

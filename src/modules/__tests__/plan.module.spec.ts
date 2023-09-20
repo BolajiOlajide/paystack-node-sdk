@@ -1,7 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import { mock } from 'jest-mock-extended';
 
-import { CREATE_PLAN_ENDPOINT } from '../../constants';
 import { ValidationError } from '../../error/validation.error';
 import { mockPlan } from '../../fixtures/plan.fixture';
 import { StatusCodes } from '../../utils/status.util';
@@ -56,7 +55,7 @@ describe('Plan', () => {
         interval: 'monthly',
       });
 
-      expect(axiosPostSpy).toBeCalledWith(CREATE_PLAN_ENDPOINT, {
+      expect(axiosPostSpy).toBeCalledWith('/plan', {
         name: 'Plan Name',
         amount: 10000,
         interval: 'monthly',
