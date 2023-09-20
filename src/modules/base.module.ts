@@ -5,7 +5,6 @@ import { handleError } from '../error';
 import { createAPIResponseSchema } from '../schema/paystack.schema';
 import { isNonErrorResponse } from '../utils/status.util';
 
-
 const responseSchema = createAPIResponseSchema(z.object({ data: z.unknown() }));
 type Response = z.infer<typeof responseSchema>;
 
