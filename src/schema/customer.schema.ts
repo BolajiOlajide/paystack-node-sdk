@@ -57,9 +57,6 @@ export type CreateCustomerArgs = z.infer<typeof createCustomerArgsSchema>;
 
 const customerSchema = z.object({
   id: z.number().positive(),
-  transactions: z.array(transactionSchema),
-  subscriptions: z.array(subscriptionSchema),
-  authorizations: z.array(authorizationSchema),
   email: z.string().email(),
   integration: z.number(),
   domain: z.string(),
@@ -67,10 +64,25 @@ const customerSchema = z.object({
   risk_action: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  identified: z.boolean(),
-  identifications: z.any(),
+  first_name: z.string().optional().nullable(),
+  last_name: z.string().optional().nullable(),
+  phone: z.string().optional().nullable(),
+  transactions: z.array(transactionSchema).optional(),
+  subscriptions: z.array(subscriptionSchema).optional(),
+  authorizations: z.array(authorizationSchema).optional(),
+  identified: z.boolean().optional(),
+  identifications: z.any().optional(),
+  metadata: z.record(z.any()).optional().nullable(),
 });
 export type Customer = z.infer<typeof customerSchema>;
 
 const createCustomerResponseSchema = createAPIResponseSchema(z.object({ data: customerSchema }));
 export type CreateCustomerResponse = z.infer<typeof createCustomerResponseSchema>;
+
+export const listCustomerArgsSchema = z.object({
+  per_page: z.number().optional(),
+});
+export type ListCustomerArgs = z.infer<typeof listCustomerArgsSchema>;
+
+export const listCustomersResponseSchema = createAPIResponseSchema(z.object({ data: z.array(customerSchema) }));
+export type ListCustomersResponse = z.infer<typeof listCustomersResponseSchema>;
