@@ -86,3 +86,8 @@ export type ListCustomerArgs = z.infer<typeof listCustomerArgsSchema>;
 
 export const listCustomersResponseSchema = createAPIResponseSchema(z.object({ data: z.array(customerSchema) }));
 export type ListCustomersResponse = z.infer<typeof listCustomersResponseSchema>;
+
+export const getCustomerArgsSchema = z.object({
+  id: z.number(),
+});
+export type GetCustomerArgs = z.infer<typeof getCustomerArgsSchema>;

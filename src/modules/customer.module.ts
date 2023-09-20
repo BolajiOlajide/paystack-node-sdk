@@ -10,40 +10,53 @@ import {
   listCustomerArgsSchema,
   ListCustomerArgs,
   ListCustomersResponse,
+  GetCustomerArgs,
 } from '../schema/customer.schema';
 import { isNonErrorResponse } from '../utils/status.util';
 
-class CustomerModule {
+import Base from './base.module';
+
+class CustomerModule extends Base {
   private httpClient: AxiosInstance;
 
   constructor(httpClient: AxiosInstance) {
+    super();
     this.httpClient = httpClient;
   }
 
   async create(args: CreateCustomerArgs): Promise<Customer> {
-    try {
+    return this.wrap(() => {
       createCustomerArgsSchema.parse(args);
 
-      const { data, status } = await this.httpClient.post<
-        CreateCustomerResponse,
-        AxiosResponse<CreateCustomerResponse>,
-        CreateCustomerArgs
-      >(CREATE_CUSTOMER_ENDPOINT, args);
+      return this.httpClient.post<CreateCustomerResponse, AxiosResponse<CreateCustomerResponse>, CreateCustomerArgs>(
+        CREATE_CUSTOMER_ENDPOINT,
+        args
+      );
+    });
+    // try {
+    // createCustomerArgsSchema.parse(args);
 
-      if (data.status && isNonErrorResponse(status)) {
-        return data.data;
-      }
+    // const { data, status } = await this.httpClient.post<
+    //   CreateCustomerResponse,
+    //   AxiosResponse<CreateCustomerResponse>,
+    //   CreateCustomerArgs
+    // >(CREATE_CUSTOMER_ENDPOINT, args);
 
-      return Promise.reject({ message: data.message });
-    } catch (err) {
-      return handleError(err);
-    }
+    //   if (data.status && isNonErrorResponse(status)) {
+    //     return data.data;
+    //   }
+
+    //   return Promise.reject({ message: data.message });
+    // } catch (err) {
+    //   return handleError(err);
+    // }
   }
 
   async list(args: ListCustomerArgs): Promise<Customer[]> {
     try {
       listCustomerArgsSchema.parse(args);
 
+      // TODO: take account of pagination arguments
       const { data, status } = await this.httpClient.get<
         ListCustomersResponse,
         AxiosResponse<ListCustomersResponse>,
@@ -59,6 +72,9 @@ class CustomerModule {
       return handleError(err);
     }
   }
+
+  // async get(args: GetCustomerArgs): Promise<Customer> {
+  // }
 }
 
 export default CustomerModule;

@@ -5,10 +5,13 @@ import { handleError } from '../error';
 import { type CreatePlanArgs, createPlanArgsSchema, type CreatePlanResponse, type Plan } from '../schema/plan.schema';
 import { isNonErrorResponse } from '../utils/status.util';
 
-class PlanModule {
+import Base from './base.module';
+
+class PlanModule extends Base {
   private httpClient: AxiosInstance;
 
   constructor(httpClient: AxiosInstance) {
+    super();
     this.httpClient = httpClient;
   }
 
@@ -21,23 +24,31 @@ class PlanModule {
    * @returns {Plan} Plan object representing the newly created plan.
    */
   async create(args: CreatePlanArgs): Promise<Plan> {
-    try {
+    return this.wrap(() => {
       createPlanArgsSchema.parse(args);
 
-      const { data, status } = await this.httpClient.post<
-        CreatePlanResponse,
-        AxiosResponse<CreatePlanResponse>,
-        CreatePlanArgs
-      >(CREATE_PLAN_ENDPOINT, args);
+      return this.httpClient.post<CreatePlanResponse, AxiosResponse<CreatePlanResponse>, CreatePlanArgs>(
+        CREATE_PLAN_ENDPOINT,
+        args
+      );
+    });
+    // try {
+    //   createPlanArgsSchema.parse(args);
 
-      if (data.status && isNonErrorResponse(status)) {
-        return data.data;
-      }
+    //   const { data, status } = await this.httpClient.post<
+    //     CreatePlanResponse,
+    //     AxiosResponse<CreatePlanResponse>,
+    //     CreatePlanArgs
+    //   >(CREATE_PLAN_ENDPOINT, args);
 
-      return Promise.reject({ message: data.message });
-    } catch (err) {
-      return handleError(err);
-    }
+    //   if (data.status && isNonErrorResponse(status)) {
+    //     return data.data;
+    //   }
+
+    //   return Promise.reject({ message: data.message });
+    // } catch (err) {
+    //   return handleError(err);
+    // }
   }
 }
 
