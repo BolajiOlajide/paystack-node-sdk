@@ -135,6 +135,10 @@ export const updateCustomerArgsSchema = z
     }),
   })
   .and(
+    // We add a refinement here because we want to validate that the user
+    // provides at least one field to update.
+    // This is because all the other fields asides `code` are optional so we need
+    // a way to verfy that atleat one field is provided for update.
     createCustomerArgsSchema.omit({ email: true }).refine((data) => Object.keys(data).length > 0, {
       message: 'At least one field is required to update',
     })
