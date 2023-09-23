@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { authorizationSchema } from './authorization.schema';
+import { identificationSchema } from './identification.schema';
 import { createAPIResponseSchema } from './paystack.schema';
 import { subscriptionSchema } from './subscription.schema';
 import { transactionSchema } from './transaction.schema';
@@ -55,13 +56,20 @@ export const createCustomerArgsSchema = z.object({
 });
 export type CreateCustomerArgs = z.infer<typeof createCustomerArgsSchema>;
 
+// allow to whitelist. deny to blacklist. Customers start with a default risk action.
+const riskActionSchema = z.enum(['allow', 'deny', 'default'], {
+  invalid_type_error: 'risk_action must be one of allow, deny or default',
+  required_error: 'risk_action is required',
+});
+type RiskAction = z.infer<typeof riskActionSchema>;
+
 const customerSchema = z.object({
   id: z.number().positive(),
   email: z.string().email(),
   integration: z.number(),
   domain: z.string(),
   customer_code: z.string(),
-  risk_action: z.string(),
+  risk_action: riskActionSchema,
   createdAt: z.string(),
   updatedAt: z.string(),
   first_name: z.string().nullish(),
@@ -71,8 +79,8 @@ const customerSchema = z.object({
   subscriptions: z.array(subscriptionSchema).optional(),
   authorizations: z.array(authorizationSchema).optional(),
   identified: z.boolean().optional(),
-  identifications: z.any().optional(),
-  metadata: z.record(z.any()).optional().nullable(),
+  identifications: z.array(identificationSchema).optional(),
+  metadata: z.record(z.any()).nullish(),
 });
 export type Customer = z.infer<typeof customerSchema>;
 
@@ -211,3 +219,15 @@ export type ValidateCustomerArgs = z.infer<typeof validateCustomerArgsSchema>;
 
 const validateCustomerResponseSchema = createAPIResponseSchema(z.object({}));
 export type ValidateCustomerResponse = z.infer<typeof validateCustomerResponseSchema>;
+
+export const whitelistOrBlacklistArgsSchema = z.object({
+  customer: z.string({
+    invalid_type_error: 'customer must be a string',
+    required_error: 'customer is required',
+  }),
+  risk_action: riskActionSchema.optional(),
+});
+export type WhitelistOrBlacklistArgs = z.infer<typeof whitelistOrBlacklistArgsSchema>;
+
+const whitelistOrBlacklistResponseSchema = createAPIResponseSchema(z.object({ data: customerSchema }));
+export type WhitelistOrBlacklistResponse = z.infer<typeof whitelistOrBlacklistResponseSchema>;

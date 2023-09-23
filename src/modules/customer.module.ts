@@ -18,6 +18,9 @@ import {
   type ValidateCustomerArgs,
   validateCustomerArgsSchema,
   type ValidateCustomerResponse,
+  whitelistOrBlacklistArgsSchema,
+  type WhitelistOrBlacklistArgs,
+  type WhitelistOrBlacklistResponse,
 } from '../schema/customer.schema';
 import { createQueryForURL } from '../utils/query.util';
 import { isNonErrorResponse } from '../utils/status.util';
@@ -93,6 +96,18 @@ class CustomerModule extends Base {
     } catch (err) {
       return handleError(err);
     }
+  }
+
+  async whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
+    return this.wrap(() => {
+      whitelistOrBlacklistArgsSchema.parse(args);
+      const url = `${this.endpoint}/set_risk_action`;
+      return this.httpClient.post<
+        WhitelistOrBlacklistResponse,
+        AxiosResponse<WhitelistOrBlacklistResponse>,
+        WhitelistOrBlacklistArgs
+      >(url, args);
+    });
   }
 }
 
