@@ -231,3 +231,12 @@ export type WhitelistOrBlacklistArgs = z.infer<typeof whitelistOrBlacklistArgsSc
 
 const whitelistOrBlacklistResponseSchema = createAPIResponseSchema(z.object({ data: customerSchema }));
 export type WhitelistOrBlacklistResponse = z.infer<typeof whitelistOrBlacklistResponseSchema>;
+
+export const deactivateAuthorizationArgsSchema = z.object({
+  authorization_code: z.string({
+    description: 'Authorization code to be deactivated',
+    invalid_type_error: 'authorization_code must be a string',
+    required_error: 'authorization_code is required',
+  }),
+});
+export type DeactivateAuthorizationArgs = z.infer<typeof deactivateAuthorizationArgsSchema>;
