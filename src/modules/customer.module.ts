@@ -1,5 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
+import { handleError } from '../error';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
@@ -14,8 +15,12 @@ import {
   updateCustomerArgsSchema,
   type UpdateCustomerArgs,
   type UpdateCustomerResponse,
+  type ValidateCustomerArgs,
+  validateCustomerArgsSchema,
+  type ValidateCustomerResponse,
 } from '../schema/customer.schema';
 import { createQueryForURL } from '../utils/query.util';
+import { isNonErrorResponse } from '../utils/status.util';
 
 import Base from './base.module';
 
@@ -68,6 +73,26 @@ class CustomerModule extends Base {
         Omit<UpdateCustomerArgs, 'code'>
       >(url, data);
     });
+  }
+
+  // We don't use the wraper here because the response we need from
+  // this endpoint is in `data.message`, regardless of whether it's
+  // successful or not.
+  async validate(args: ValidateCustomerArgs): Promise<string> {
+    try {
+      validateCustomerArgsSchema.parse(args);
+
+      const { code, ...rest } = args;
+      const url = `${this.endpoint}/${code}/identification`;
+      const { data, status } = await this.httpClient.post<ValidateCustomerResponse>(url, rest);
+      if (data.status && isNonErrorResponse(status)) {
+        return data.message;
+      }
+
+      return Promise.reject({ message: data.message });
+    } catch (err) {
+      return handleError(err);
+    }
   }
 }
 

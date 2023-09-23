@@ -27,7 +27,7 @@ export const createCustomerArgsSchema = z.object({
     .nonempty({
       message: 'first_name must be a non-empty string',
     })
-    .optional(),
+    .nullish(),
 
   last_name: z
     .string({
@@ -37,7 +37,7 @@ export const createCustomerArgsSchema = z.object({
     .nonempty({
       message: 'last_name must be a non-empty string',
     })
-    .optional(),
+    .nullish(),
 
   phone: z
     .string({
@@ -45,13 +45,13 @@ export const createCustomerArgsSchema = z.object({
       description: "Customer's phone number",
     })
     .nonempty()
-    .optional(),
+    .nullish(),
 
   metadata: z
     .record(z.any(), {
       invalid_type_error: 'metadata must be an object',
     })
-    .optional(),
+    .nullish(),
 });
 export type CreateCustomerArgs = z.infer<typeof createCustomerArgsSchema>;
 
@@ -64,9 +64,9 @@ const customerSchema = z.object({
   risk_action: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  first_name: z.string().optional().nullable(),
-  last_name: z.string().optional().nullable(),
-  phone: z.string().optional().nullable(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
   transactions: z.array(transactionSchema).optional(),
   subscriptions: z.array(subscriptionSchema).optional(),
   authorizations: z.array(authorizationSchema).optional(),
@@ -147,3 +147,67 @@ export type UpdateCustomerArgs = z.infer<typeof updateCustomerArgsSchema>;
 
 const updateCustomerResponseSchema = createAPIResponseSchema(z.object({ data: z.array(customerSchema) }));
 export type UpdateCustomerResponse = z.infer<typeof updateCustomerResponseSchema>;
+
+export const validateCustomerArgsSchema = z.object({
+  code: z.string({
+    description: "customer's code",
+    invalid_type_error: 'code must be a string',
+    required_error: 'code is required',
+  }),
+  type: z.literal('bank_account', {
+    description: 'Predefined types of identification. Only bank_account is supported at the moment',
+    invalid_type_error: 'only `bank_account` is supported for type',
+    required_error: 'type is required',
+  }),
+  country: z
+    .string({
+      description: '2 letter country code of identification issuer',
+      required_error: 'country is required',
+      invalid_type_error: 'country must be a string',
+    })
+    .length(2, {
+      message: 'Country code must be a valid 2 character country code',
+    }),
+  // Once we have other types, account_number and bank_code should be optional and only be required
+  // if `type = bank_account`.
+  account_number: z.string({
+    required_error: 'account_number is required',
+    invalid_type_error: 'account_number must be a string',
+    description: "Customer's bank account number. (required if type is bank_account)",
+  }),
+  bank_code: z.string({
+    required_error: 'bank_code is required',
+    invalid_type_error: 'bank_code must be a string',
+  }),
+  bvn: z
+    .string({
+      required_error: 'bvn is required',
+      invalid_type_error: 'bvn must be a string',
+    })
+    .length(11, {
+      message: 'BVN must be 11 digit',
+    }),
+  middle_name: z
+    .string({
+      invalid_type_error: 'middle_name must be a string',
+    })
+    .nullish(),
+  last_name: z
+    .string({
+      invalid_type_error: 'last_name must be a string',
+    })
+    .nullish(),
+  first_name: z.string({
+    invalid_type_error: 'first_name must be a string',
+    required_error: 'first_name is required',
+  }),
+  value: z
+    .string({
+      invalid_type_error: 'value must be a string',
+    })
+    .optional(),
+});
+export type ValidateCustomerArgs = z.infer<typeof validateCustomerArgsSchema>;
+
+const validateCustomerResponseSchema = createAPIResponseSchema(z.object({}));
+export type ValidateCustomerResponse = z.infer<typeof validateCustomerResponseSchema>;
