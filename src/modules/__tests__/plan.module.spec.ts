@@ -8,13 +8,13 @@ import Plan from '../plan.module';
 
 jest.mock('axios');
 
-describe('Plan', () => {
+describe('PlanModule', () => {
   const mockedAxios = mock<AxiosInstance>();
   const axiosPostSpy = jest.spyOn(mockedAxios, 'post');
 
   const planModule = new Plan(mockedAxios);
 
-  describe('createPlan', () => {
+  describe('create', () => {
     it('should throw error if plan amount is less than or equal to zero', async () => {
       const expected = new ValidationError('amount must be greater than 0');
       await expect(

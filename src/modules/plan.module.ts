@@ -24,7 +24,6 @@ class PlanModule extends Base {
   async create(args: CreatePlanArgs): Promise<Plan> {
     return this.wrap(() => {
       createPlanArgsSchema.parse(args);
-      console.log(args);
       return this.httpClient.post<CreatePlanResponse, AxiosResponse<CreatePlanResponse>, CreatePlanArgs>(
         this.endpoint,
         args
