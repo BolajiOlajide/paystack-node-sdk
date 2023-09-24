@@ -146,7 +146,7 @@ export const updateCustomerArgsSchema = z
     // This is because all the other fields asides `code` are optional so we need
     // a way to verfy that atleat one field is provided for update.
     createCustomerArgsSchema.omit({ email: true }).refine((data) => Object.keys(data).length > 0, {
-      message: 'At least one field is required to update',
+      message: 'at least one field to update must be provided',
     })
   );
 export type UpdateCustomerArgs = z.infer<typeof updateCustomerArgsSchema>;
@@ -172,7 +172,7 @@ export const validateCustomerArgsSchema = z.object({
       invalid_type_error: 'country must be a string',
     })
     .length(2, {
-      message: 'Country code must be a valid 2 character country code',
+      message: 'country must be a 2-character value',
     }),
   // Once we have other types, account_number and bank_code should be optional and only be required
   // if `type = bank_account`.
@@ -191,7 +191,7 @@ export const validateCustomerArgsSchema = z.object({
       invalid_type_error: 'bvn must be a string',
     })
     .length(11, {
-      message: 'BVN must be 11 digit',
+      message: 'bvn must consist of 11 digits',
     }),
   middle_name: z
     .string({
