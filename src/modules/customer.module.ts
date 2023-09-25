@@ -49,13 +49,13 @@ class CustomerModule extends Base {
     });
   }
 
-  async list(args: ListCustomerArgs): Promise<Customer[]> {
-    return this.wrap(() => {
-      listCustomerArgsSchema.parse(args);
-      const url = createQueryForURL(this.endpoint, args || {});
-      return this.httpClient.get<ListCustomersResponse, AxiosResponse<ListCustomersResponse>>(url);
-    });
-  }
+  // async list(args: ListCustomerArgs): Promise<Customer[]> {
+  //   return this.wrapWithMeta(() => {
+  //     listCustomerArgsSchema.parse(args);
+  //     const url = createQueryForURL(this.endpoint, args || {});
+  //     return this.httpClient.get<ListCustomersResponse, AxiosResponse<ListCustomersResponse>>(url);
+  //   });
+  // }
 
   async get(args: GetCustomerArgs): Promise<Customer> {
     return this.wrap(() => {

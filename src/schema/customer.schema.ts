@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import { authorizationSchema } from './authorization.schema';
+import { createAPIResponseSchema, metaSchema } from './base.schema';
 import { identificationSchema } from './identification.schema';
-import { createAPIResponseSchema } from './paystack.schema';
 import { subscriptionSchema } from './subscription.schema';
 import { transactionSchema } from './transaction.schema';
 
@@ -117,7 +117,9 @@ export const listCustomerArgsSchema = z.object({
 });
 export type ListCustomerArgs = z.infer<typeof listCustomerArgsSchema>;
 
-const listCustomersResponseSchema = createAPIResponseSchema(z.object({ data: z.array(customerSchema) }));
+const listCustomersResponseSchema = createAPIResponseSchema(
+  z.object({ data: z.array(customerSchema), meta: metaSchema })
+);
 export type ListCustomersResponse = z.infer<typeof listCustomersResponseSchema>;
 
 export const getCustomerArgsSchema = z.object({

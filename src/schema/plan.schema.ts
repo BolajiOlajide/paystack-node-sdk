@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
+import { createAPIResponseSchema } from './base.schema';
 import { currencySchema } from './currency.schema';
-import { createAPIResponseSchema } from './paystack.schema';
 
 const planIntervalSchema = z.enum(['hourly', 'daily', 'weekly', 'monthly', 'quarterly', 'bianually', 'annually'], {
   description: 'The interval at which to charge subscriptions on this plan.',

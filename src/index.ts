@@ -4,7 +4,7 @@ import { PAYSTACK_BASE_API_URL } from './constants';
 import { createHTTPClient } from './http';
 import Customer from './modules/customer.module';
 import Plan from './modules/plan.module';
-import { paystackSchema, type PaystackArgs } from './schema/paystack.schema';
+import { paystackSchema, type PaystackArgs } from './schema/base.schema';
 
 class Paystack {
   private secretKey: string;
