@@ -34,7 +34,7 @@ class Base {
   async wrapWithMeta<T>(f: () => Promise<AxiosResponse<Response>>): Promise<WithMeta<T>> {
     try {
       const resp = await this._wrap(f);
-      return { data: resp.data as T, meta: resp.meta } as WithMeta<T>;
+      return { data: resp.data as T[], meta: resp.meta } as WithMeta<T>;
     } catch (err) {
       return handleError(err);
     }

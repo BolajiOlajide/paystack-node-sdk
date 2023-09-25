@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
 import { handleError } from '../error';
+import type { WithMeta } from '../schema/base.schema';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
@@ -49,13 +50,13 @@ class CustomerModule extends Base {
     });
   }
 
-  // async list(args: ListCustomerArgs): Promise<Customer[]> {
-  //   return this.wrapWithMeta(() => {
-  //     listCustomerArgsSchema.parse(args);
-  //     const url = createQueryForURL(this.endpoint, args || {});
-  //     return this.httpClient.get<ListCustomersResponse, AxiosResponse<ListCustomersResponse>>(url);
-  //   });
-  // }
+  async list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
+    return this.wrapWithMeta(() => {
+      listCustomerArgsSchema.parse(args);
+      const url = createQueryForURL(this.endpoint, args || {});
+      return this.httpClient.get<ListCustomersResponse, AxiosResponse<ListCustomersResponse>>(url);
+    });
+  }
 
   async get(args: GetCustomerArgs): Promise<Customer> {
     return this.wrap(() => {

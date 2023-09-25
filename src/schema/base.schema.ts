@@ -38,6 +38,6 @@ export const createAPIResponseSchema = <T extends z.AnyZodObject>(schema: T) =>
   apiErrorResponseSchema.or(apiSuccessResponseSchema.merge(schema));
 
 export interface WithMeta<T> {
-  data: T;
+  data: T[];
   meta: Meta;
 }

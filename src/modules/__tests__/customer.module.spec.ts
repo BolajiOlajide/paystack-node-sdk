@@ -82,12 +82,13 @@ describe('CustomerModule', () => {
     });
 
     it('should list all customer', async () => {
-      const customers = await customerModule.list({});
+      const response = await customerModule.list({});
       expect(axiosGetSpy).toBeCalledWith('/customer');
       expect(axiosGetSpy).toBeCalledTimes(1);
       expect(axiosPostSpy).not.toBeCalled();
-      expect(customers).toHaveLength(1);
 
+      const { data: customers } = response;
+      expect(customers).toHaveLength(1);
       const [firstCustomer] = customers;
       expect(firstCustomer).toEqual(newMockCustomer);
     });
