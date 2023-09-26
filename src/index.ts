@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import type { AxiosInstance } from 'axios';
 
 import { PAYSTACK_BASE_API_URL } from './constants';
 import { createHTTPClient } from './http';
