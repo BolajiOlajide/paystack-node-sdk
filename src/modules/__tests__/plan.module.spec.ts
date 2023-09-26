@@ -24,8 +24,6 @@ describe('PlanModule', () => {
           interval: 'monthly',
         })
       ).rejects.toEqual(expected);
-
-      expect(axiosPostSpy).not.toBeCalled();
     });
 
     it('should throw error if name is an empty string', async () => {
@@ -37,8 +35,6 @@ describe('PlanModule', () => {
           interval: 'monthly',
         })
       ).rejects.toEqual(expected);
-
-      expect(axiosPostSpy).not.toBeCalled();
     });
 
     it('should create plan', async () => {

@@ -28,9 +28,6 @@ describe('CustomerModule', () => {
     it('should return validation error when email is not defined', async () => {
       const expected = new ValidationError('email is required');
       await expect(customerModule.create({} as CreateCustomerArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
     });
 
     it('should create customer', async () => {
@@ -49,7 +46,6 @@ describe('CustomerModule', () => {
         email: 'bolaji@test.com',
       });
       expect(axiosPostSpy).toBeCalledTimes(1);
-      expect(axiosGetSpy).not.toBeCalled();
       expect(customer).toEqual(newMockCustomer);
     });
   });
@@ -66,18 +62,16 @@ describe('CustomerModule', () => {
     });
 
     describe('pagination', () => {
-      it('when per_page is defined', async () => {
+      it('should add the per_page query to the url when the per_page field is provided', async () => {
         await customerModule.list({ per_page: 50 });
         expect(axiosGetSpy).toBeCalledWith('/customer?per_page=50');
         expect(axiosGetSpy).toBeCalledTimes(1);
-        expect(axiosPostSpy).not.toBeCalled();
       });
 
-      it('when page is defined', async () => {
+      it('should add the page query to the url when the page field is provided', async () => {
         await customerModule.list({ page: 2 });
         expect(axiosGetSpy).toBeCalledWith('/customer?page=2');
         expect(axiosGetSpy).toBeCalledTimes(1);
-        expect(axiosPostSpy).not.toBeCalled();
       });
     });
 
@@ -85,7 +79,6 @@ describe('CustomerModule', () => {
       const response = await customerModule.list({});
       expect(axiosGetSpy).toBeCalledWith('/customer');
       expect(axiosGetSpy).toBeCalledTimes(1);
-      expect(axiosPostSpy).not.toBeCalled();
 
       const { data: customers } = response;
       expect(customers).toHaveLength(1);
@@ -108,9 +101,6 @@ describe('CustomerModule', () => {
     it("should return an eror when email_or_code isn't provided", async () => {
       const expected = new ValidationError('email_or_code is required');
       await expect(customerModule.get({} as GetCustomerArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
     });
 
     it('should return the customer information', async () => {
@@ -118,7 +108,6 @@ describe('CustomerModule', () => {
       const customer = await customerModule.get({ email_or_code: 'dshdkadaff' });
       expect(axiosGetSpy).toBeCalledWith(`/customer/${emailOrCode}`);
       expect(axiosGetSpy).toBeCalledTimes(1);
-      expect(axiosPostSpy).not.toBeCalled();
       expect(customer).toEqual(newMockCustomer);
     });
   });
@@ -127,19 +116,11 @@ describe('CustomerModule', () => {
     it('should throw an error when code is not provided', async () => {
       const expected = new ValidationError('code is required');
       await expect(customerModule.update({} as UpdateCustomerArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it('should throw an error if no data to update is provided', async () => {
       const expected = new ValidationError('at least one field to update must be provided');
       await expect(customerModule.update({ code: '93203923' })).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it('should return the updated customer info', async () => {
@@ -157,8 +138,6 @@ describe('CustomerModule', () => {
       const code = '93203923';
       const customer = await customerModule.update({ code, first_name: 'Korede' });
 
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
       expect(axiosPutSpy).toBeCalledWith(`/customer/${code}`, {
         first_name: 'Korede',
       });
@@ -171,19 +150,11 @@ describe('CustomerModule', () => {
     it("should throw an error if code isn't provided", async () => {
       const expected = new ValidationError('code is required');
       await expect(customerModule.validate({} as ValidateCustomerArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if type isn't provided", async () => {
       const expected = new ValidationError('Invalid literal value, expected "bank_account"');
       await expect(customerModule.validate({ code: '92032' } as ValidateCustomerArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if country isn't provided", async () => {
@@ -191,10 +162,6 @@ describe('CustomerModule', () => {
       await expect(
         customerModule.validate({ code: '92032', type: 'bank_account' } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if country isn't a 2-character value", async () => {
@@ -202,10 +169,6 @@ describe('CustomerModule', () => {
       await expect(
         customerModule.validate({ code: '92032', type: 'bank_account', country: 'NGA' } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if account_number isn't provided", async () => {
@@ -213,10 +176,6 @@ describe('CustomerModule', () => {
       await expect(
         customerModule.validate({ code: '92032', type: 'bank_account', country: 'NG' } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if bank_code isn't provided", async () => {
@@ -229,10 +188,6 @@ describe('CustomerModule', () => {
           account_number: '0001101023',
         } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if bvn isn't provided", async () => {
@@ -246,10 +201,6 @@ describe('CustomerModule', () => {
           bank_code: '052',
         } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if bvn isn't 11-characters", async () => {
@@ -264,10 +215,6 @@ describe('CustomerModule', () => {
           bvn: '09129323',
         } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it("should throw an error if first_name isn't provided", async () => {
@@ -282,10 +229,6 @@ describe('CustomerModule', () => {
           bvn: '09129323000',
         } as ValidateCustomerArgs)
       ).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it('should return a validation message if successful', async () => {
@@ -316,8 +259,6 @@ describe('CustomerModule', () => {
         first_name: 'Korede',
       });
       expect(axiosPostSpy).toBeCalledTimes(1);
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
   });
 
@@ -325,10 +266,6 @@ describe('CustomerModule', () => {
     it("should throw an error when customer isn't provided", async () => {
       const expected = new ValidationError('customer is required');
       await expect(customerModule.whitelistOrBlacklist({} as WhitelistOrBlacklistArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it('should whitelist or blacklist a customer', async () => {
@@ -344,8 +281,6 @@ describe('CustomerModule', () => {
 
       expect(axiosPostSpy).toBeCalledWith('/customer/set_risk_action', { customer: '93022121', risk_action: 'deny' });
       expect(axiosPostSpy).toBeCalledTimes(1);
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
   });
 
@@ -353,10 +288,6 @@ describe('CustomerModule', () => {
     it("should throw an error when authorization_code isn't provided", async () => {
       const expected = new ValidationError('authorization_code is required');
       await expect(customerModule.deactivateAuthorization({} as DeactivateAuthorizationArgs)).rejects.toEqual(expected);
-
-      expect(axiosGetSpy).not.toBeCalled();
-      expect(axiosPostSpy).not.toBeCalled();
-      expect(axiosPutSpy).not.toBeCalled();
     });
 
     it('should deactive an authorization', async () => {

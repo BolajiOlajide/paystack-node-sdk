@@ -21,7 +21,7 @@ class PlanModule extends Base {
    * @param {CreatePlanArgs} args
    * @returns {Plan} Plan object representing the newly created plan.
    */
-  async create(args: CreatePlanArgs): Promise<Plan> {
+  create(args: CreatePlanArgs): Promise<Plan> {
     return this.wrap(() => {
       createPlanArgsSchema.parse(args);
       return this.httpClient.post<CreatePlanResponse, AxiosResponse<CreatePlanResponse>, CreatePlanArgs>(

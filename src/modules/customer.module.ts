@@ -39,7 +39,7 @@ class CustomerModule extends Base {
     this.httpClient = httpClient;
   }
 
-  async create(args: CreateCustomerArgs): Promise<Customer> {
+  create(args: CreateCustomerArgs): Promise<Customer> {
     return this.wrap(() => {
       createCustomerArgsSchema.parse(args);
 
@@ -50,7 +50,7 @@ class CustomerModule extends Base {
     });
   }
 
-  async list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
+  list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
     return this.wrapWithMeta(() => {
       listCustomerArgsSchema.parse(args);
       const url = createQueryForURL(this.endpoint, args || {});
@@ -58,7 +58,7 @@ class CustomerModule extends Base {
     });
   }
 
-  async get(args: GetCustomerArgs): Promise<Customer> {
+  get(args: GetCustomerArgs): Promise<Customer> {
     return this.wrap(() => {
       getCustomerArgsSchema.parse(args);
 
@@ -67,7 +67,7 @@ class CustomerModule extends Base {
     });
   }
 
-  async update(args: UpdateCustomerArgs): Promise<Customer> {
+  update(args: UpdateCustomerArgs): Promise<Customer> {
     return this.wrap(() => {
       updateCustomerArgsSchema.parse(args);
 
@@ -101,7 +101,7 @@ class CustomerModule extends Base {
     }
   }
 
-  async whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
+  whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
     return this.wrap(() => {
       whitelistOrBlacklistArgsSchema.parse(args);
       const url = `${this.endpoint}/set_risk_action`;
