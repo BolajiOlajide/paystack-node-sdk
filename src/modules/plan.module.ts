@@ -5,12 +5,10 @@ import { type CreatePlanArgs, createPlanArgsSchema, type CreatePlanResponse, typ
 import Base from './base.module';
 
 class PlanModule extends Base {
-  private httpClient: AxiosInstance;
   private endpoint: string = '/plan';
 
   constructor(httpClient: AxiosInstance) {
-    super();
-    this.httpClient = httpClient;
+    super(httpClient);
   }
 
   /**

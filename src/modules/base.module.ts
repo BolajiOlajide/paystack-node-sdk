@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import { z } from 'zod';
 
 import { handleError } from '../error';
@@ -12,6 +12,12 @@ const successResponseSchema = apiSuccessResponseSchema.merge(z.object({ data: z.
 type SuccessResponse = z.infer<typeof successResponseSchema>;
 
 class Base {
+  public httpClient: AxiosInstance;
+
+  constructor(httpClient: AxiosInstance) {
+    this.httpClient = httpClient;
+  }
+
   private async _wrap(f: () => Promise<AxiosResponse<Response>>): Promise<SuccessResponse> {
     const { data, status: statusCode } = await f();
 

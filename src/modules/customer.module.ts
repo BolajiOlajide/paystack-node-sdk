@@ -31,12 +31,10 @@ import { isNonErrorResponse } from '../utils/status.util';
 import Base from './base.module';
 
 class CustomerModule extends Base {
-  private httpClient: AxiosInstance;
   private endpoint: string = '/customer';
 
   constructor(httpClient: AxiosInstance) {
-    super();
-    this.httpClient = httpClient;
+    super(httpClient);
   }
 
   create(args: CreateCustomerArgs): Promise<Customer> {
