@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { StatusCodes } from '../utils/status.util';
 
 import { APIError } from './api.error';
+import { NotFoundError } from './notfound.error';
 import { RateLimitError } from './ratelimit.error';
 import { UnauthorizedError } from './unauthorized.error';
 import { ValidationError } from './validation.error';
@@ -23,6 +24,8 @@ export const handleError = (err: unknown): Promise<never> => {
           return Promise.reject(new UnauthorizedError('invalid secret key'));
         case StatusCodes.TOO_MANY_REQUESTS:
           return Promise.reject(new RateLimitError('too many requests'));
+        case StatusCodes.NOT_FOUND:
+          return Promise.reject(new NotFoundError('resource not found'));
         default:
           return Promise.reject(new APIError(data.message));
       }
