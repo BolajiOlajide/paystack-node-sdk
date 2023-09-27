@@ -12,3 +12,10 @@ export const countrySchema = z.object({
   relationships: z.record(z.string(), z.any()),
 });
 export type Country = z.infer<typeof countrySchema>;
+
+export const stateSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  abbreviation: z.string(),
+});
+export type State = z.infer<typeof stateSchema>;

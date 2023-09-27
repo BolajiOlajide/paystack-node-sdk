@@ -12,6 +12,9 @@ switch (command) {
   case 'listCountries':
     ps.misc.listCountries().then(console.log).catch(console.error);
     break;
+  case 'listStates':
+    ps.misc.listStates({ country: 'US' }).then(console.log).catch(console.error);
+    break;
   default:
     console.error('invalid command');
 }
