@@ -1,4 +1,4 @@
-import type { Country } from '../schema/country.schema';
+import type { Country, State } from '../schema/country.schema';
 
 export const mockCountry = {
   id: 1,
@@ -177,5 +177,23 @@ export const mockCountries: Country[] = [
         data: ['PAYM_001'],
       },
     },
+  },
+];
+
+export const mockStates: State[] = [
+  {
+    name: 'Alaska',
+    slug: 'alaska',
+    abbreviation: 'AK',
+  },
+  {
+    name: 'Alabama',
+    slug: 'alabama',
+    abbreviation: 'AL',
+  },
+  {
+    name: 'Arkansas',
+    slug: 'arkansas',
+    abbreviation: 'AR',
   },
 ];

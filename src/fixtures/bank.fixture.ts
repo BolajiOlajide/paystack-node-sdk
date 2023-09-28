@@ -1,6 +1,6 @@
 import type { Bank } from '../schema/bank.schema';
 
-export const mockBanks = [
+export const mockBanks: Bank[] = [
   {
     id: 302,
     name: '9mobile 9Payment Service Bank',
