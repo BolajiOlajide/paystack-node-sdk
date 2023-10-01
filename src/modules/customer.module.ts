@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 
 import { handleError } from '../error';
 import type { WithMeta } from '../schema/base.schema';
