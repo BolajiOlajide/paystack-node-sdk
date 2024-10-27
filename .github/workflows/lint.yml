@@ -35,6 +35,9 @@ jobs:
       - name: Run Prettier
         run: pnpm format
 
+      - name: Run `attw`
+        run: pnpm build && pnpm check-exports
+
       - name: Check for Linting Changes
         run: |
           git diff --exit-code || (echo "Linting changes were found. Run 'pnpm lint && pnpm format' locally and commit the changes." && exit 1)
