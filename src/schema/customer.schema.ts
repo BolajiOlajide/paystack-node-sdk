@@ -61,7 +61,7 @@ const riskActionSchema = z.enum(['allow', 'deny', 'default'], {
   invalid_type_error: 'risk_action must be one of allow, deny or default',
   required_error: 'risk_action is required',
 });
-type RiskAction = z.infer<typeof riskActionSchema>;
+export type RiskAction = z.infer<typeof riskActionSchema>;
 
 const customerSchema = z.object({
   id: z.number().positive(),

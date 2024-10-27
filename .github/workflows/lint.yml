@@ -14,27 +14,27 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
 
-      - name: Use Node.js 18.17.1
+      - name: Use Node.js 20.18.0
         uses: actions/setup-node@v2
         with:
-          node-version: 18.17.1
+          node-version: 20.18.0
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Run Eslint
-        run: pnpm lint:fix
+        run: pnpm lint
 
       - name: Run Prettier
-        run: pnpm prettify
+        run: pnpm format
 
       - name: Check for Linting Changes
         run: |
-          git diff --exit-code || (echo "Linting changes were found. Run 'pnpm lint:fix && pnpm prettify' locally and commit the changes." && exit 1)
+          git diff --exit-code || (echo "Linting changes were found. Run 'pnpm lint && pnpm format' locally and commit the changes." && exit 1)

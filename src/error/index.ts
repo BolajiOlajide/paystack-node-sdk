@@ -14,7 +14,7 @@ export const handleError = (err: unknown): Promise<never> => {
     // We want to display Zod errors one at a time, so we stick
     // to a similar format for returning errors.
     const [firstError] = err.errors;
-    return Promise.reject(new ValidationError(firstError.message));
+    return Promise.reject(new ValidationError(firstError?.message ?? err.message));
   } else if (err instanceof AxiosError) {
     // Handle API errors (most likely from Paystack's API)
     if (err.response) {

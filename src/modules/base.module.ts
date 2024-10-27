@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosResponse } from 'axios';
 import { z } from 'zod';
 
 import { handleError } from '../error';
-import { createAPIResponseSchema, type Meta, apiSuccessResponseSchema, type WithMeta } from '../schema/base.schema';
+import { createAPIResponseSchema, apiSuccessResponseSchema, type WithMeta } from '../schema/base.schema';
 import { isNonErrorResponse } from '../utils/status.util';
 
 const responseSchema = createAPIResponseSchema(z.object({ data: z.unknown() }));
