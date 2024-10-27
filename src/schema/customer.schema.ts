@@ -63,7 +63,7 @@ const riskActionSchema = z.enum(['allow', 'deny', 'default'], {
 });
 export type RiskAction = z.infer<typeof riskActionSchema>;
 
-const customerSchema = z.object({
+export const customerSchema = z.object({
   id: z.number().positive(),
   email: z.string().email(),
   integration: z.number(),

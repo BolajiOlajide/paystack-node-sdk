@@ -1,27 +1,40 @@
-import axios, { type AxiosRequestConfig } from 'axios';
+import { trimTrailingSlash, trimLeadingSlash } from "../utils/trim.util";
 
-/**
- * Creates an Axios HTTP client instance configured for use with the Paystack API.
- *
- * @param {string} baseURL - The base URL for the Paystack API.
- * @param {string} secretKey - The secret key to authorise requests.
- * @param {AxiosRequestConfig} [config] - Additional Axios configuration.
- * @returns {AxiosInstance} The configured Axios HTTP client instance.
- */
-export function createHTTPClient(baseURL: string, secretKey: string, config?: AxiosRequestConfig) {
-  const client = axios.create({
-    // We don't want the baseURL and authorisation config to be overwritten
-    baseURL,
+export class HttpClient {
+  private baseUrl: string;
+  private secretKey: string;
+  private headers: HeadersInit;
 
-    // The configuration above shouldn't be overwritten as they're required for the SDK
-    // to work properly.
-    ...config,
-    headers: {
-      ...config?.headers,
+  constructor(baseUrl: string, secretKey: string) {
+    this.baseUrl = trimTrailingSlash(baseUrl);
+    this.secretKey = secretKey;
+    this.headers = {
+      'Authorization': `Bearer ${secretKey}`,
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${secretKey}`,
-    },
-  });
+    };
+  }
 
-  return client;
+  private computeUrl(url: string): string {
+    const trimmedUrl = trimLeadingSlash(url);
+    return `${this.baseUrl}/${trimmedUrl}`;
+  }
+
+  async get(url: string) {
+    const response = await fetch(this.computeUrl(url), {
+      headers: this.headers,
+    });
+    if (!response.ok) {
+      // Custom error thrown. And return details from response.body
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  }
+
+  async post(url: string, data: any) {
+    const response = await fetch(this.computeUrl(url), {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: this.headers,
+    });
+  }
 }

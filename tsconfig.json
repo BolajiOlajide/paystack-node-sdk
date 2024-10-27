@@ -21,10 +21,13 @@
     // "rootDir": "./src", // handled by tsup
     // "sourceMap": true, // handled by tsup
     // "declaration": true, // handled by tsup
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "forceConsistentCasingInFileNames": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts"],
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src/**/*.ts", "examples/**/*.ts"],
   "exclude": ["node_modules", "dist", "src/**/*.spec.ts"]
 }
