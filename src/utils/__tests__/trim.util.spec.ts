@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { trimLeadingSlash, trimTrailingSlash } from '../trim.util';
 
 describe('trimUtil', () => {
