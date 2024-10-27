@@ -128,9 +128,10 @@ Once it's filed:
 #### Local Development
 
 This project uses
-TypeScript for static typing
-Jest for testing
-ESLint, Prettier, and Husky for linting, formatting, and git hooks.
+
+- TypeScript for static typing
+- Vitest for testing
+- ESLint, Prettier, and Husky for linting, formatting, and git hooks.
 
 <!-- omit in toc -->
 

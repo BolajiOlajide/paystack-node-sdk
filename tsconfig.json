@@ -3,7 +3,7 @@
     "target": "es2016",
     "lib": ["es2017"],
     "module": "commonjs",
-    "types": ["jest", "node"],
+    "types": ["node"],
     "sourceMap": true,
     "outDir": "./dist",
     "esModuleInterop": true,
@@ -11,6 +11,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "jest.config.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "src/**/*.spec.ts"]
 }
