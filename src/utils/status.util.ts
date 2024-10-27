@@ -19,7 +19,8 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.2.2
    *
-   * This code is sent in response to an Upgrade request header by the client, and indicates the protocol the server is switching too.
+   * This code is sent in response to an Upgrade request header by the client
+   * and indicates the protocol the server is switching too.
    */
   SWITCHING_PROTOCOLS = 101,
   /**
@@ -41,7 +42,7 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.2
    *
-   * The request has succeeded and a new resource has been created as a result of it. This is typically the response sent after a PUT request.
+   * The request has succeeded, and a new resource has been created as a result of it. This is typically the response sent after a PUT request.
    */
   CREATED = 201,
   /**
@@ -53,7 +54,9 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.4
    *
-   * This response code means returned meta-information set is not exact set as available from the origin server, but collected from a local or a third party copy. Except this condition, 200 OK response should be preferred instead of this response.
+   * This response code means returned meta-information set is not exact set as available from the origin server,
+   * but collected from a local or a third party copy.
+   * Except for this condition, 200 OK response should be preferred instead of this response.
    */
   NON_AUTHORITATIVE_INFORMATION = 203,
   /**
@@ -65,13 +68,14 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.6
    *
-   * This response code is sent after accomplishing request to tell user agent reset document view which sent this request.
+   * This response code is sent after achieving the request
+   * to tell the user agent to reset the document view which sent this request.
    */
   RESET_CONTENT = 205,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7233#section-4.1
    *
-   * This response code is used because of range header sent by the client to separate download into multiple streams.
+   * This response code is used because of the range header sent by the client to separate download into multiple streams.
    */
   PARTIAL_CONTENT = 206,
   /**
@@ -83,31 +87,38 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.1
    *
-   * The request has more than one possible responses. User-agent or user should choose one of them. There is no standardized way to choose one of the responses.
+   * The request has more than one possible response.
+   * User-agent or user should choose one of them.
+   * There is no standardised way to choose one of the responses.
    */
   MULTIPLE_CHOICES = 300,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.2
    *
-   * This response code means that URI of requested resource has been changed. Probably, new URI would be given in the response.
+   * This response code means that the URI of the requested resource has been changed.
+   * Probably, a new URI would be given in the response.
    */
   MOVED_PERMANENTLY = 301,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.3
    *
-   * This response code means that URI of requested resource has been changed temporarily. New changes in the URI might be made in the future. Therefore, this same URI should be used by the client in future requests.
+   * This response code means that the URI of the requested resource has been changed temporarily.
+   * New changes in the URI might be made in the future.
+   * Therefore, the client should use this same URI in future requests.
    */
   MOVED_TEMPORARILY = 302,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.4
    *
-   * Server sent this response to directing client to get requested resource to another URI with an GET request.
+   * Server sent this response, directing the client to get the requested resource to another URI with a GET request.
    */
   SEE_OTHER = 303,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7232#section-4.1
    *
-   * This is used for caching purposes. It is telling to client that response has not been modified. So, client can continue to use same cached version of response.
+   * This is used for caching purposes.
+   * It is telling the client that the response has not been modified.
+   * So, the client can continue to use the same cached version of response.
    */
   NOT_MODIFIED = 304,
   /**
@@ -120,7 +131,11 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.7
    *
-   * Server sent this response to directing client to get requested resource to another URI with same method that used prior request. This has the same semantic than the 302 Found HTTP response code, with the exception that the user agent must not change the HTTP method used: if a POST was used in the first request, a POST must be used in the second request.
+   * Server sent this response to the client to get the requested resource to
+   * another URI with the same method that it used in the prior request.
+   * This has the same semantic as the 302 Found HTTP response code,
+   * with the exception that the user agent must not change the HTTP method used:
+   * if a POST was used in the first request, a POST must be used in the second request.
    */
   TEMPORARY_REDIRECT = 307,
   /**
@@ -132,31 +147,39 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.1
    *
-   * This response means that server could not understand the request due to invalid syntax.
+   * This response means that the server could not understand the request due to invalid syntax.
    */
   BAD_REQUEST = 400,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7235#section-3.1
    *
-   * Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.
+   * Although the HTTP standard specifies "unauthorised", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.
    */
   UNAUTHORIZED = 401,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.2
    *
-   * This response code is reserved for future use. Initial aim for creating this code was using it for digital payment systems however this is not used currently.
+   * This response code is reserved for future use.
+   * The initial aim for creating this code was using it for digital
+   * payment systems, however, this is not used currently.
    */
   PAYMENT_REQUIRED = 402,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.3
    *
-   * The client does not have access rights to the content, i.e. they are unauthorized, so server is rejecting to give proper response. Unlike 401, the client's identity is known to the server.
+   * The client does not have access rights to the content,
+   * i.e. they are unauthorised, so the server is rejecting to give a proper response.
+   * Unlike 401, the client's identity is known to the server.
    */
   FORBIDDEN = 403,
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.4
    *
-   * The server can not find requested resource. In the browser, this means the URL is not recognized. In an API, this can also mean that the endpoint is valid but the resource itself does not exist. Servers may also send this response instead of 403 to hide the existence of a resource from an unauthorized client. This response code is probably the most famous one due to its frequent occurence on the web.
+   * The server cannot find the requested resource.
+   * In the browser, this means the URL is not recognised.
+   * In an API, this can also mean that the endpoint is valid but the resource itself does not exist.
+   * Servers may also send this response instead of 403 to hide the existence of a resource from an unauthorised client.
+   * This response code is probably the most famous one due to its frequent occurrence on the web.
    */
   NOT_FOUND = 404,
   /**
@@ -174,7 +197,7 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7235#section-3.2
    *
-   * This is similar to 401 but authentication is needed to be done by a proxy.
+   * This is similar to 401, but authentication is needed to be done by a proxy.
    */
   PROXY_AUTHENTICATION_REQUIRED = 407,
   /**
@@ -192,7 +215,11 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.9
    *
-   * This response would be sent when the requested content has been permenantly deleted from server, with no forwarding address. Clients are expected to remove their caches and links to the resource. The HTTP specification intends this status code to be used for "limited-time, promotional services". APIs should not feel compelled to indicate resources that have been deleted with this status code.
+   * This response would be sent when the requested content has been permanently deleted from the server,
+   * with no forwarding address.
+   * Clients are expected to remove their caches and links to the resource.
+   * The HTTP specification intends this status code to be used for "limited-time, promotional services".
+   * APIs should not feel compelled to indicate resources that have been deleted with this status code.
    */
   GONE = 410,
   /**
@@ -210,7 +237,8 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.11
    *
-   * Request entity is larger than limits defined by server; the server might close the connection or return an Retry-After header field.
+   * The request entity is larger than limits defined by the server;
+   * the server might close the connection or return a Retry-After header field.
    */
   REQUEST_TOO_LONG = 413,
   /**
@@ -234,7 +262,7 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.14
    *
-   * This response code means the expectation indicated by the Expect request header field can't be met by the server.
+   * This response code means the server can't meet the expectation indicated by the Expect request header field.
    */
   EXPECTATION_FAILED = 417,
   /**
@@ -277,7 +305,7 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.5
    *
-   * The request failed due to failure of a previous request.
+   * The request failed due to the failure of a previous request.
    */
   FAILED_DEPENDENCY = 424,
   /**
@@ -325,7 +353,14 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.6.4
    *
-   * The server is not ready to handle the request. Common causes are a server that is down for maintenance or that is overloaded. Note that together with this response, a user-friendly page explaining the problem should be sent. This responses should be used for temporary conditions and the Retry-After: HTTP header should, if possible, contain the estimated time before the recovery of the service. The webmaster must also take care about the caching-related headers that are sent along with this response, as these temporary condition responses should usually not be cached.
+   * The server is not ready to handle the request.
+   * Common causes are a server that is down for maintenance or that is overloaded.
+   * Note that together with this response, a user-friendly page explaining the problem should be sent.
+   * This response should be used for temporary conditions,
+   * and the Retry-After: HTTP header should, if possible,
+   * contain the estimated time before the recovery of the service.
+   * The webmaster must also take care of the caching-related headers that are sent along with this response,
+   * as these temporary condition responses should usually not be cached.
    */
   SERVICE_UNAVAILABLE = 503,
   /**
@@ -337,7 +372,7 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.6.6
    *
-   * The HTTP version used in the request is not supported by the server.
+   * The server does not support the HTTP version used in the request.
    */
   HTTP_VERSION_NOT_SUPPORTED = 505,
   /**
@@ -349,7 +384,7 @@ export enum StatusCodes {
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc6585#section-6
    *
-   * The 511 status code indicates that the client needs to authenticate to gain network access.
+   * The client needs to authenticate to gain network access.
    */
   NETWORK_AUTHENTICATION_REQUIRED = 511,
 }

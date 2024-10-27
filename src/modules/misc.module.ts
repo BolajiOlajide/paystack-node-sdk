@@ -20,7 +20,7 @@ import { Base } from './base.module';
  *
  * https://docs-v2.paystack.com/docs/api/miscellaneous/
  */
-export class MiscellanouseModule extends Base {
+export class MiscellaneousModule extends Base {
   constructor(httpClient: AxiosInstance) {
     super(httpClient);
   }
