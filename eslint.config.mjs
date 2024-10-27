@@ -1,6 +1,6 @@
-import tsParser from '@typescript-eslint/parser'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-import importPlugin from 'eslint-plugin-import'
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import importPlugin from 'eslint-plugin-import';
 
 const ignoreList = {
   ignores: [
@@ -12,8 +12,8 @@ const ignoreList = {
     'main.js',
     'tsup.config.ts',
     'eslint.config.mjs',
-  ]
-}
+  ],
+};
 
 export default [
   {
@@ -29,7 +29,7 @@ export default [
     ...ignoreList,
     plugins: {
       '@typescript-eslint': tsPlugin,
-      'import': importPlugin,
+      import: importPlugin,
     },
     rules: {
       '@typescript-eslint/no-unused-vars': 'warn',
@@ -80,4 +80,4 @@ export default [
       },
     },
   },
-]
+];
