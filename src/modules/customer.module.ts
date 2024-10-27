@@ -28,9 +28,9 @@ import {
 import { createQueryForURL } from '../utils/query.util';
 import { isNonErrorResponse } from '../utils/status.util';
 
-import Base from './base.module';
+import { Base } from './base.module';
 
-class CustomerModule extends Base {
+export class CustomerModule extends Base {
   private endpoint: string = '/customer';
 
   constructor(httpClient: AxiosInstance) {
@@ -130,5 +130,3 @@ class CustomerModule extends Base {
     }
   }
 }
-
-export default CustomerModule;

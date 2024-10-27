@@ -5,6 +5,4 @@
  *
  * https://paystack.com/docs/payments/subscriptions/
  */
-class SubscriptionModule {}
-
-export default SubscriptionModule;
+export class SubscriptionModule {}

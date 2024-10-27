@@ -2,19 +2,19 @@ import type { AxiosInstance } from 'axios';
 
 import { PAYSTACK_BASE_API_URL } from './constants';
 import { createHTTPClient } from './http';
-import Customer from './modules/customer.module';
-import Misc from './modules/misc.module';
-import Plan from './modules/plan.module';
+import { CustomerModule } from './modules/customer.module';
+import { MiscellanouseModule } from './modules/misc.module';
+import { PlanModule } from './modules/plan.module';
 import { paystackSchema, type PaystackArgs } from './schema/base.schema';
 
-class Paystack {
+export class Paystack {
   private secretKey: string;
   private baseUrl: string;
   private httpClient: AxiosInstance;
 
-  public plan: Plan;
-  public customer: Customer;
-  public misc: Misc;
+  public plan: PlanModule;
+  public customer: CustomerModule;
+  public misc: MiscellanouseModule;
 
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
@@ -24,10 +24,8 @@ class Paystack {
     this.httpClient = createHTTPClient(this.baseUrl, this.secretKey);
 
     // register modules
-    this.plan = new Plan(this.httpClient);
-    this.customer = new Customer(this.httpClient);
-    this.misc = new Misc(this.httpClient);
+    this.plan = new PlanModule(this.httpClient);
+    this.customer = new CustomerModule(this.httpClient);
+    this.misc = new MiscellanouseModule(this.httpClient);
   }
 }
-
-export default Paystack;
