@@ -1,15 +1,29 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "lib": ["es2017"],
-    "module": "commonjs",
-    "types": ["node"],
-    "sourceMap": true,
-    "outDir": "./dist",
+    /* Base Options: */
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "allowJs": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "moduleResolution": "Node",
+
+    /* Strictness */
     "strict": true,
-    "skipLibCheck": true
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    /* TypeScript transpilation */
+    "module": "Preserve",
+    // "outDir": "./dist", // handled by tsup
+    // "rootDir": "./src", // handled by tsup
+    // "sourceMap": true, // handled by tsup
+    // "declaration": true, // handled by tsup
+    "lib": ["ES2022"],
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "src/**/*.spec.ts"]

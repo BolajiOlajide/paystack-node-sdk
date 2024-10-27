@@ -1,8 +1,4 @@
-module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
+const config = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:import/warnings', 'prettier'],
   overrides: [
     {
@@ -46,4 +42,7 @@ module.exports = {
     },
   },
   root: true,
+  ignores: ['dist', 'node_modules', 'coverage', 'examples', '*-lock.{json,yml,yaml}', 'main.js'],
 };
+
+export default config;
