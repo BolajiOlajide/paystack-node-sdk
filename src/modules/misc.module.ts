@@ -13,14 +13,14 @@ import {
 } from '../schema/misc.schema';
 import { createQueryForURL } from '../utils/query.util';
 
-import Base from './base.module';
+import { Base } from './base.module';
 
 /**
  * The Miscellaneous API are supporting APIs that can be used to provide more details to other APIs.
  *
  * https://docs-v2.paystack.com/docs/api/miscellaneous/
  */
-class MiscellanouseModule extends Base {
+export class MiscellanouseModule extends Base {
   constructor(httpClient: AxiosInstance) {
     super(httpClient);
   }
@@ -47,5 +47,3 @@ class MiscellanouseModule extends Base {
     });
   }
 }
-
-export default MiscellanouseModule;

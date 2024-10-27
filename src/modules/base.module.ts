@@ -11,7 +11,7 @@ type Response = z.infer<typeof responseSchema>;
 const successResponseSchema = apiSuccessResponseSchema.merge(z.object({ data: z.unknown() }));
 type SuccessResponse = z.infer<typeof successResponseSchema>;
 
-class Base {
+export class Base {
   public httpClient: AxiosInstance;
 
   constructor(httpClient: AxiosInstance) {
@@ -46,5 +46,3 @@ class Base {
     }
   }
 }
-
-export default Base;

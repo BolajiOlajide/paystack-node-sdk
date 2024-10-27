@@ -2,9 +2,9 @@ import type { AxiosInstance, AxiosResponse } from 'axios';
 
 import { type CreatePlanArgs, createPlanArgsSchema, type CreatePlanResponse, type Plan } from '../schema/plan.schema';
 
-import Base from './base.module';
+import { Base } from './base.module';
 
-class PlanModule extends Base {
+export class PlanModule extends Base {
   private endpoint: string = '/plan';
 
   constructor(httpClient: AxiosInstance) {
@@ -29,5 +29,3 @@ class PlanModule extends Base {
     });
   }
 }
-
-export default PlanModule;
