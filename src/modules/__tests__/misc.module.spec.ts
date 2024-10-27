@@ -12,7 +12,7 @@ test('MiscModule', () => {
 // import { mockCountries, mockCountry, mockStates } from '../../fixtures/country.fixture';
 // import type { ListStatesArgs } from '../../schema/misc.schema';
 // import { StatusCodes } from '../../utils/status.util';
-// import MiscellanouseModule from '../misc.module';
+// import MiscellaneousModule from '../misc.module';
 
 // jest.mock('axios');
 
@@ -20,7 +20,7 @@ test('MiscModule', () => {
 //   const mockedAxios = mock<AxiosInstance>();
 //   const axiosGetSpy = jest.spyOn(mockedAxios, 'get');
 
-//   const miscModule = new MiscellanouseModule(mockedAxios);
+//   const miscModule = new MiscellaneousModule(mockedAxios);
 
 //   describe('listCountries', () => {
 //     it('should return a list of countries', async () => {

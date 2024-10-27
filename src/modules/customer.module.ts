@@ -79,7 +79,7 @@ export class CustomerModule extends Base {
     });
   }
 
-  // We don't use the wraper here because the response we need from
+  // We don't use the wrapper here because the response we need from
   // this endpoint is in `data.message`, regardless of whether it's
   // successful or not.
   async validate(args: ValidateCustomerArgs): Promise<string> {
@@ -111,7 +111,7 @@ export class CustomerModule extends Base {
     });
   }
 
-  // We don't use the wraper here because the response we need from
+  // We don't use the wrapper here because the response we need from
   // this endpoint is in `data.message`, regardless of whether it's
   // successful or not.
   async deactivateAuthorization(args: DeactivateAuthorizationArgs): Promise<string> {

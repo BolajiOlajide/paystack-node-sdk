@@ -3,7 +3,7 @@ import type { AxiosInstance } from 'axios';
 import { PAYSTACK_BASE_API_URL } from './constants';
 import { createHTTPClient } from './http';
 import { CustomerModule } from './modules/customer.module';
-import { MiscellanouseModule } from './modules/misc.module';
+import { MiscellaneousModule } from './modules/misc.module';
 import { PlanModule } from './modules/plan.module';
 import { paystackSchema, type PaystackArgs } from './schema/base.schema';
 
@@ -14,7 +14,7 @@ export class Paystack {
 
   public plan: PlanModule;
   public customer: CustomerModule;
-  public misc: MiscellanouseModule;
+  public misc: MiscellaneousModule;
 
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
@@ -26,6 +26,6 @@ export class Paystack {
     // register modules
     this.plan = new PlanModule(this.httpClient);
     this.customer = new CustomerModule(this.httpClient);
-    this.misc = new MiscellanouseModule(this.httpClient);
+    this.misc = new MiscellaneousModule(this.httpClient);
   }
 }

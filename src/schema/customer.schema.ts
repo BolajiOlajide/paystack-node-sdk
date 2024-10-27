@@ -56,7 +56,7 @@ export const createCustomerArgsSchema = z.object({
 });
 export type CreateCustomerArgs = z.infer<typeof createCustomerArgsSchema>;
 
-// allow to whitelist. deny to blacklist. Customers start with a default risk action.
+// Allow whitelisting. Deny to blacklist. Customers start with a default risk action.
 const riskActionSchema = z.enum(['allow', 'deny', 'default'], {
   invalid_type_error: 'risk_action must be one of allow, deny or default',
   required_error: 'risk_action is required',
@@ -145,8 +145,8 @@ export const updateCustomerArgsSchema = z
   .and(
     // We add a refinement here because we want to validate that the user
     // provides at least one field to update.
-    // This is because all the other fields asides `code` are optional so we need
-    // a way to verfy that atleat one field is provided for update.
+    // This is because all the other fields asides `code` are optional, so we need
+    // a way to verify that at least one field is provided for update.
     createCustomerArgsSchema.omit({ email: true }).refine((data) => Object.keys(data).length > 0, {
       message: 'at least one field to update must be provided',
     })
