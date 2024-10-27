@@ -33,8 +33,8 @@ jobs:
         run: pnpm lint
 
       - name: Run Prettier
-        run: pnpm prettify
+        run: pnpm format
 
       - name: Check for Linting Changes
         run: |
-          git diff --exit-code || (echo "Linting changes were found. Run 'pnpm lint && pnpm prettify' locally and commit the changes." && exit 1)
+          git diff --exit-code || (echo "Linting changes were found. Run 'pnpm lint && pnpm format' locally and commit the changes." && exit 1)

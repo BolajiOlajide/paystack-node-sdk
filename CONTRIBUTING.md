@@ -150,11 +150,11 @@ pnpm run lint # Run linter
 ```
 
 ```bash
-pnpm run lint:fix # Run linter and fix issues
+pnpm run lint # Run linter
 ```
 
 ```bash
-pnpm run prettify # Run formatter
+pnpm run format # Run formatter
 ```
 
 <!-- TODO
