@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
-import { bankSchema } from './bank.schema';
-import { createAPIResponseSchema } from './base.schema';
-import { countrySchema, stateSchema } from './country.schema';
-
-const listCountryResponseSchema = createAPIResponseSchema(z.object({ data: z.array(countrySchema) }));
-export type ListCountryResponse = z.infer<typeof listCountryResponseSchema>;
+import { countryNameSchema } from './country.schema';
 
 export const listStatesArgsSchema = z.object({
   country: z.string({
@@ -16,16 +11,8 @@ export const listStatesArgsSchema = z.object({
 });
 export type ListStatesArgs = z.infer<typeof listStatesArgsSchema>;
 
-const listStatesResponseSchema = createAPIResponseSchema(z.object({ data: z.array(stateSchema) }));
-export type ListStatesResponse = z.infer<typeof listStatesResponseSchema>;
-
 export const listBanksArgsSchema = z.object({
-  country: z
-    .string({
-      invalid_type_error: 'country must be a string',
-      description: 'the country from which to obtain the list of supported banks. e.g country=ghana or country=nigeria',
-    })
-    .optional(),
+  country: countryNameSchema.optional(),
   pay_with_bank_transfer: z
     .boolean({
       invalid_type_error: 'pay_with_bank_transfer must be a boolean',
@@ -64,6 +51,3 @@ export const listBanksArgsSchema = z.object({
     .optional(),
 });
 export type ListBanksArgs = z.infer<typeof listBanksArgsSchema>;
-
-const listBanksResponseSchema = createAPIResponseSchema(z.object({ data: z.array(bankSchema) }));
-export type ListBanksResponse = z.infer<typeof listBanksResponseSchema>;

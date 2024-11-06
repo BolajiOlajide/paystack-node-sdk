@@ -1,132 +1,151 @@
-import type { AxiosInstance, AxiosResponse } from 'axios';
-
-import { handleError } from '../error';
-import type { WithMeta } from '../schema/base.schema';
+import { handleModuleError } from '../error';
+import type { HttpClient } from '../http';
+import { type WithMeta } from '../schema/base.schema';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
-  type CreateCustomerResponse,
   type Customer,
   listCustomerArgsSchema,
   type ListCustomerArgs,
-  type ListCustomersResponse,
   type GetCustomerArgs,
   getCustomerArgsSchema,
-  type GetCustomerResponse,
   updateCustomerArgsSchema,
   type UpdateCustomerArgs,
-  type UpdateCustomerResponse,
   type ValidateCustomerArgs,
   validateCustomerArgsSchema,
-  type ValidateCustomerResponse,
   whitelistOrBlacklistArgsSchema,
   type WhitelistOrBlacklistArgs,
-  type WhitelistOrBlacklistResponse,
-  type DeactivateAuthorizationArgs,
   deactivateAuthorizationArgsSchema,
+  type DeactivateAuthorizationArgs,
 } from '../schema/customer.schema';
 import { createQueryForURL } from '../utils/query.util';
-import { isNonErrorResponse } from '../utils/status.util';
 
 import { Base } from './base.module';
 
+/**
+ * The Customer API are endpoints that can be used to manage customers.
+ *
+ * https://paystack.com/docs/api/customer/
+ */
 export class CustomerModule extends Base {
   private endpoint: string = '/customer';
 
-  constructor(httpClient: AxiosInstance) {
+  constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
-  create(args: CreateCustomerArgs): Promise<Customer> {
-    return this.wrap(() => {
+  async create(args: CreateCustomerArgs): Promise<Customer> {
+    try {
       createCustomerArgsSchema.parse(args);
+      const result = await this._post<Customer, CreateCustomerArgs>(this.endpoint, args);
 
-      return this.httpClient.post<CreateCustomerResponse, AxiosResponse<CreateCustomerResponse>, CreateCustomerArgs>(
-        this.endpoint,
-        args
-      );
-    });
+      if (result.status) {
+        return result.data;
+      }
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
-    return this.wrapWithMeta(() => {
-      listCustomerArgsSchema.parse(args);
-      const url = createQueryForURL(this.endpoint, args || {});
-      return this.httpClient.get<ListCustomersResponse, AxiosResponse<ListCustomersResponse>>(url);
-    });
+  async list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
+    try {
+      const transformedArgs = listCustomerArgsSchema.parse(args || {});
+      const url = createQueryForURL(this.endpoint, transformedArgs);
+      const result = await this._get<WithMeta<Customer>>(url);
+
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  get(args: GetCustomerArgs): Promise<Customer> {
-    return this.wrap(() => {
+  async get(args: GetCustomerArgs): Promise<Customer> {
+    try {
       getCustomerArgsSchema.parse(args);
-
       const url = `${this.endpoint}/${args.email_or_code}`;
-      return this.httpClient.get<GetCustomerResponse, AxiosResponse<GetCustomerResponse>>(url);
-    });
+      const result = await this._get<Customer>(url);
+
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  update(args: UpdateCustomerArgs): Promise<Customer> {
-    return this.wrap(() => {
+  async update(args: UpdateCustomerArgs): Promise<Customer> {
+    try {
       updateCustomerArgsSchema.parse(args);
 
       const { code, ...data } = args;
       const url = `${this.endpoint}/${code}`;
-      return this.httpClient.put<
-        UpdateCustomerResponse,
-        AxiosResponse<UpdateCustomerResponse>,
-        Omit<UpdateCustomerArgs, 'code'>
-      >(url, data);
-    });
+      const result = await this._put<Customer, Omit<UpdateCustomerArgs, 'code'>>(url, data);
+
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  // We don't use the wrapper here because the response we need from
-  // this endpoint is in `data.message`, regardless of whether it's
-  // successful or not.
   async validate(args: ValidateCustomerArgs): Promise<string> {
     try {
       validateCustomerArgsSchema.parse(args);
 
       const { code, ...rest } = args;
       const url = `${this.endpoint}/${code}/identification`;
-      const { data, status } = await this.httpClient.post<ValidateCustomerResponse>(url, rest);
-      if (data.status && isNonErrorResponse(status)) {
-        return data.message;
+      const result = await this._post<never, Omit<ValidateCustomerArgs, 'code'>>(url, rest);
+
+      if (result.status) {
+        return result.message;
       }
 
-      return Promise.reject({ message: data.message });
+      return Promise.reject(new Error(result.message));
     } catch (err) {
-      return handleError(err);
+      return handleModuleError(err);
     }
   }
 
-  whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
-    return this.wrap(() => {
+  async whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
+    try {
       whitelistOrBlacklistArgsSchema.parse(args);
       const url = `${this.endpoint}/set_risk_action`;
-      return this.httpClient.post<
-        WhitelistOrBlacklistResponse,
-        AxiosResponse<WhitelistOrBlacklistResponse>,
-        WhitelistOrBlacklistArgs
-      >(url, args);
-    });
+      const result = await this._post<Customer, WhitelistOrBlacklistArgs>(url, args);
+
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  // We don't use the wrapper here because the response we need from
-  // this endpoint is in `data.message`, regardless of whether it's
-  // successful or not.
   async deactivateAuthorization(args: DeactivateAuthorizationArgs): Promise<string> {
     try {
       deactivateAuthorizationArgsSchema.parse(args);
 
       const url = `${this.endpoint}/deactivate_authorization`;
-      const { data, status } = await this.httpClient.post<ValidateCustomerResponse>(url, args);
-      if (data.status && isNonErrorResponse(status)) {
-        return data.message;
+      const result = await this._post<never, DeactivateAuthorizationArgs>(url, args);
+
+      if (result.status) {
+        return result.data;
       }
 
-      return Promise.reject({ message: data.message });
+      return Promise.reject(new Error(result.message));
     } catch (err) {
-      return handleError(err);
+      return handleModuleError(err);
     }
   }
 }

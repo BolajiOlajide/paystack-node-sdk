@@ -10,10 +10,3 @@ export type httpClientArgs = z.infer<typeof httpClientSchema>;
 const httpMethodSchema = z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']);
 
 export type httpMethod = z.infer<typeof httpMethodSchema>;
-
-const requestArgsSchema = z.object({
-  endpoint: z.string(),
-  method: httpMethodSchema,
-});
-
-export type requestArgs = z.infer<typeof requestArgsSchema>;

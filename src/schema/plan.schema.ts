@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { createAPIResponseSchema } from './base.schema';
 import { currencySchema } from './currency.schema';
 
 const planIntervalSchema = z.enum(['hourly', 'daily', 'weekly', 'monthly', 'quarterly', 'bianually', 'annually'], {
@@ -75,7 +74,7 @@ export const createPlanArgsSchema = z.object({
 });
 export type CreatePlanArgs = z.infer<typeof createPlanArgsSchema>;
 
-const planSchema = z.object({
+export const planSchema = z.object({
   name: z.string(),
   interval: planIntervalSchema,
   amount: z.number().positive(),
@@ -87,13 +86,44 @@ const planSchema = z.object({
   send_invoices: z.boolean(),
   send_sms: z.boolean(),
   hosted_page: z.boolean(),
+  hosted_page_url: z.string().nullish(),
+  hosted_page_summary: z.any().nullish(),
   migrate: z.boolean(),
   is_archived: z.boolean(),
+  is_deleted: z.boolean().optional(),
   id: z.number().positive(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  total_subscriptions_revenue: z.number().positive().optional(),
+  subscribers: z.array(z.any()).optional(),
+  description: z.string().nullish(),
+  pages: z.array(z.any()).optional(),
+  subscriptions: z.array(z.any()).optional(),
+  total_subscriptions: z.number().positive().optional(),
+  active_subscriptions: z.number().positive().optional(),
 });
 export type Plan = z.infer<typeof planSchema>;
 
-const createPlanResponseSchema = createAPIResponseSchema(z.object({ data: planSchema }));
-export type CreatePlanResponse = z.infer<typeof createPlanResponseSchema>;
+export const listPlanArgsSchema = z
+  .object({
+    perPage: z.number().optional(),
+    page: z.number().optional(),
+    status: z.string().optional(),
+    interval: planIntervalSchema.optional(),
+    amount: z.number().positive().optional(),
+  })
+  .optional();
+export type ListPlanArgs = z.infer<typeof listPlanArgsSchema>;
+
+export const updatePlanArgsSchema = z.object({
+  id_or_code: z.string(),
+  name: z.string(),
+  amount: z.number().positive(),
+  interval: planIntervalSchema,
+  description: z.string().optional(),
+  send_invoices: z.boolean().optional(),
+  send_sms: z.boolean().optional(),
+  invoice_limit: z.number().positive().optional(),
+  currency: currencySchema.optional(),
+});
+export type UpdatePlanArgs = z.infer<typeof updatePlanArgsSchema>;
