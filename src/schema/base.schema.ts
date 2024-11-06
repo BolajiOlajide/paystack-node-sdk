@@ -41,9 +41,3 @@ export interface WithMeta<T> {
   data: T[];
   meta: Meta;
 }
-
-export const withMetaSchema = <T extends z.AnyZodObject>(schema: T) =>
-  z.object({
-    data: z.array(schema),
-    meta: metaSchema,
-  });

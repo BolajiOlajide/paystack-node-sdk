@@ -55,7 +55,6 @@ export class MiscellaneousModule extends Base {
     try {
       listBanksArgsSchema.parse(args);
       const url = createQueryForURL('/bank', args);
-      console.log({ url });
       const result = await this._get<Bank[]>(url);
       if (result.status) {
         return result.data;
@@ -65,10 +64,4 @@ export class MiscellaneousModule extends Base {
       return handleModuleError(err);
     }
   }
-  //   return this.wrap(() => {
-  //     listBanksArgsSchema.parse(args);
-  //     const url = createQueryForURL('/bank', args);
-  //     return this.httpClient.get<ListBanksResponse>(url);
-  //   });
-  // }
 }
