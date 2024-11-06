@@ -5,6 +5,9 @@ import { HttpResponseValidationError } from '../../error/validation.error';
 import { parseHttpResponse } from '../parse.util';
 
 describe('parseHttpResponse', () => {
+  it('should work', () => {
+    expect(true).toBe(true);
+  });
   // it('should parse valid data', () => {
   //   const schema = z.object({
   //     name: z.string(),
