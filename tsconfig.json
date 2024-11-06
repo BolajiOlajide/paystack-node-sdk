@@ -28,6 +28,6 @@
   "ts-node": {
     "esm": true
   },
-  "include": ["src/**/*.ts", "examples/**/*.ts"],
-  "exclude": ["node_modules", "dist", "src/**/*.spec.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "src/**/*.spec.ts", "examples/**/*.ts"]
 }
