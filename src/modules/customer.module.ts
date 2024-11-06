@@ -1,35 +1,22 @@
-import { handleError } from '../error';
+import { handleModuleError } from '../error';
 import type { HttpClient } from '../http';
-import { withMetaSchema, type WithMeta } from '../schema/base.schema';
+import { type WithMeta } from '../schema/base.schema';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
-  type CreateCustomerResponse,
   type Customer,
   listCustomerArgsSchema,
   type ListCustomerArgs,
-  type ListCustomersResponse,
   type GetCustomerArgs,
   getCustomerArgsSchema,
-  type GetCustomerResponse,
   updateCustomerArgsSchema,
   type UpdateCustomerArgs,
-  type UpdateCustomerResponse,
   type ValidateCustomerArgs,
   validateCustomerArgsSchema,
-  type ValidateCustomerResponse,
   whitelistOrBlacklistArgsSchema,
   type WhitelistOrBlacklistArgs,
-  type WhitelistOrBlacklistResponse,
-  type DeactivateAuthorizationArgs,
-  deactivateAuthorizationArgsSchema,
-  customerSchema,
-  validateCustomerResponseSchema,
 } from '../schema/customer.schema';
-import { transactionSchema } from '../schema/transaction.schema';
-import { parseHttpResponse } from '../utils/parse.util';
 import { createQueryForURL } from '../utils/query.util';
-import { isNonErrorResponse } from '../utils/status.util';
 
 import { Base } from './base.module';
 
@@ -48,9 +35,9 @@ export class CustomerModule extends Base {
       if (result.status) {
         return result.data;
       }
-      return Promise.reject({ message: result.message });
+      return Promise.reject(new Error(result.message));
     } catch (err) {
-      return Promise.reject({ message: (err as Error).message });
+      return handleModuleError(err);
     }
   }
 
@@ -64,9 +51,9 @@ export class CustomerModule extends Base {
         return result.data;
       }
 
-      return Promise.reject({ message: result.message });
+      return Promise.reject(new Error(result.message));
     } catch (err) {
-      return Promise.reject({ message: (err as Error).message });
+      return handleModuleError(err);
     }
   }
 
@@ -80,51 +67,63 @@ export class CustomerModule extends Base {
         return result.data;
       }
 
-      return Promise.reject({ message: result.message });
+      return Promise.reject(new Error(result.message));
     } catch (err) {
-      return Promise.reject({ message: (err as Error).message });
+      return handleModuleError(err);
     }
   }
 
   async update(args: UpdateCustomerArgs): Promise<Customer> {
-    updateCustomerArgsSchema.parse(args);
+    try {
+      updateCustomerArgsSchema.parse(args);
 
-    const { code, ...data } = args;
-    const url = `${this.endpoint}/${code}`;
-    const result = await this._put<Customer, Omit<UpdateCustomerArgs, 'code'>>(url, data);
+      const { code, ...data } = args;
+      const url = `${this.endpoint}/${code}`;
+      const result = await this._put<Customer, Omit<UpdateCustomerArgs, 'code'>>(url, data);
 
-    if (result.status) {
-      return result.data;
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
     }
-
-    return Promise.reject({ message: result.message });
   }
 
-  // async validate(args: ValidateCustomerArgs): Promise<ValidateCustomerResponse> {
-  //   validateCustomerArgsSchema.parse(args);
+  async validate(args: ValidateCustomerArgs): Promise<string> {
+    try {
+      validateCustomerArgsSchema.parse(args);
 
-  //   const { code, ...rest } = args;
-  //   const url = `${this.endpoint}/${code}/identification`;
-  //   const result = await this._post<ValidateCustomerResponse, Omit<ValidateCustomerArgs, 'code'>>(url, rest);
+      const { code, ...rest } = args;
+      const url = `${this.endpoint}/${code}/identification`;
+      const result = await this._post<never, Omit<ValidateCustomerArgs, 'code'>>(url, rest);
 
-  //   if (result.status) {
-  //     return result.message;
-  //   }
+      if (result.status) {
+        return result.message;
+      }
 
-  //   return Promise.reject({ message: result.message });
-  // }
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
+  }
 
-  // whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
-  //   return this.wrap(() => {
-  //     whitelistOrBlacklistArgsSchema.parse(args);
-  //     const url = `${this.endpoint}/set_risk_action`;
-  //     return this.httpClient.post<
-  //       WhitelistOrBlacklistResponse,
-  //       AxiosResponse<WhitelistOrBlacklistResponse>,
-  //       WhitelistOrBlacklistArgs
-  //     >(url, args);
-  //   });
-  // }
+  async whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {
+    try {
+      whitelistOrBlacklistArgsSchema.parse(args);
+      const url = `${this.endpoint}/set_risk_action`;
+      const result = await this._post<Customer, WhitelistOrBlacklistArgs>(url, args);
+
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
+  }
 
   // // We don't use the wraper here because the response we need from
   // // this endpoint is in `data.message`, regardless of whether it's

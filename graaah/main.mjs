@@ -18,10 +18,34 @@ const paystack = new Paystack({
     // });
     // console.log(customers);
 
-    const customer = await paystack.customer.get({
-      email_or_code: 'test_CUS_abj843xvrcwpk6v',
+    // const customer = await paystack.customer.get({
+    //   email_or_code: 'CUS_abj843xvrcwpk6v',
+    // });
+
+    // const customer = await paystack.customer.update({
+    //   code: 'CUS_9gue4r20plwfqhy',
+    //   first_name: 'John',
+    //   last_name: 'Doe',
+    // });
+    // console.log(customer, 'customer .....');
+
+    // const validationMsg = await paystack.customer.validate({
+    //   code: 'CUS_9gue4r20plwfqhy',
+    //   first_name: 'John',
+    //   last_name: 'Doe',
+    //   country: 'NG',
+    //   type: 'bank_account',
+    //   account_number: '0123456789',
+    //   bank_code: '012',
+    //   bvn: '20012345677'
+    // });
+    // console.log(validationMsg);
+
+    const customer = await paystack.customer.whitelistOrBlacklist({
+      customer: 'CUS_b4e5m4dk53c6y3y',
+      risk_action: 'allow',
     });
-    console.log(customer, 'customer .....');
+    console.log(customer);
   } catch (err) {
     console.error(err);
   }

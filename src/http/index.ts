@@ -1,4 +1,5 @@
-import type { HTTPResponse } from '../_types';
+import { BadRequestError } from '../error/badrequest.error';
+import { ForbiddenError } from '../error/forbidden.error';
 import { NotFoundError } from '../error/notfound.error';
 import { RateLimitError } from '../error/ratelimit.error';
 import { UnauthorizedError } from '../error/unauthorized.error';
@@ -14,7 +15,7 @@ export class HttpClient {
     this.baseUrl = trimTrailingSlash(baseUrl);
     this.secretKey = secretKey;
     this.headers = {
-      Authorization: `Bearer ${secretKey}`,
+      Authorization: `Bearer ${this.secretKey}`,
       'Content-Type': 'application/json',
     };
   }
@@ -24,13 +25,15 @@ export class HttpClient {
     return `${this.baseUrl}/${trimmedUrl}`;
   }
 
-  private handleNotOKResponse(errBody: any, status: number): Error {
-    if (errBody.status) {
-      return new Error(errBody.message);
+  private async handleNotOKResponse(response: Response): Promise<Error> {
+    const contentLength = response.headers.get('Content-Length');
+    let errMessage: string = '';
+    if (contentLength !== '0') {
+      const errBody = await response.json();
+      errMessage = errBody.message;
     }
 
-    const errMessage = errBody.message;
-    switch (status) {
+    switch (response.status) {
       case StatusCodes.TOO_MANY_REQUESTS:
         // TODO (@BolajiOlajide): Surface more info about the rate limit status
         return new RateLimitError(`rate limit reached. ${errMessage}`);
@@ -38,8 +41,12 @@ export class HttpClient {
         return new UnauthorizedError(errMessage);
       case StatusCodes.NOT_FOUND:
         return new NotFoundError(errMessage);
+      case StatusCodes.BAD_REQUEST:
+        return new BadRequestError(errMessage);
+      case StatusCodes.FORBIDDEN:
+        return new ForbiddenError(errMessage);
       default:
-        return new Error(`HTTP error! status: ${status} ${errMessage}`);
+        return new Error(`HTTP error! status: ${response.status} ${errMessage}`);
     }
   }
 
@@ -47,11 +54,11 @@ export class HttpClient {
     const response = await fetch(this.computeUrl(url), {
       headers: this.headers,
     });
-    const body = await response.json();
     if (!response.ok) {
-      return Promise.reject(this.handleNotOKResponse(body, response.status));
+      const err = await this.handleNotOKResponse(response);
+      return Promise.reject(err);
     }
-    return body;
+    return response.json();
   }
 
   async post<T, U extends Record<string, any>>(url: string, data: U): Promise<T> {
@@ -60,11 +67,11 @@ export class HttpClient {
       body: JSON.stringify(data),
       headers: this.headers,
     });
-    const body = await response.json();
     if (!response.ok) {
-      return Promise.reject(this.handleNotOKResponse(body, response.status));
+      const err = await this.handleNotOKResponse(response);
+      return Promise.reject(err);
     }
-    return body;
+    return response.json();
   }
 
   async put<T, U extends Record<string, any>>(url: string, data: U): Promise<T> {
@@ -73,10 +80,10 @@ export class HttpClient {
       body: JSON.stringify(data),
       headers: this.headers,
     });
-    const body = await response.json();
     if (!response.ok) {
-      return Promise.reject(this.handleNotOKResponse(body, response.status));
+      const err = await this.handleNotOKResponse(response);
+      return Promise.reject(err);
     }
-    return body;
+    return response.json();
   }
 }

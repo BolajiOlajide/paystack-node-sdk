@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { authorizationSchema } from './authorization.schema';
-import { createAPIResponseSchema, metaSchema } from './base.schema';
 import { identificationSchema } from './identification.schema';
 import { subscriptionSchema } from './subscription.schema';
 import { transactionSchema } from './transaction.schema';
@@ -84,9 +83,6 @@ export const customerSchema = z.object({
 });
 export type Customer = z.infer<typeof customerSchema>;
 
-const createCustomerResponseSchema = createAPIResponseSchema(z.object({ data: customerSchema }));
-export type CreateCustomerResponse = z.infer<typeof createCustomerResponseSchema>;
-
 export const listCustomerArgsSchema = z.object({
   per_page: z
     .number({
@@ -117,11 +113,6 @@ export const listCustomerArgsSchema = z.object({
 });
 export type ListCustomerArgs = z.infer<typeof listCustomerArgsSchema>;
 
-const listCustomersResponseSchema = createAPIResponseSchema(
-  z.object({ data: z.array(customerSchema), meta: metaSchema })
-);
-export type ListCustomersResponse = z.infer<typeof listCustomersResponseSchema>;
-
 export const getCustomerArgsSchema = z.object({
   email_or_code: z.string({
     invalid_type_error: 'email_or_code must be string',
@@ -130,9 +121,6 @@ export const getCustomerArgsSchema = z.object({
   }),
 });
 export type GetCustomerArgs = z.infer<typeof getCustomerArgsSchema>;
-
-const getCustomerResponseSchema = createAPIResponseSchema(z.object({ data: z.array(customerSchema) }));
-export type GetCustomerResponse = z.infer<typeof getCustomerResponseSchema>;
 
 export const updateCustomerArgsSchema = z
   .object({
@@ -152,9 +140,6 @@ export const updateCustomerArgsSchema = z
     })
   );
 export type UpdateCustomerArgs = z.infer<typeof updateCustomerArgsSchema>;
-
-const updateCustomerResponseSchema = createAPIResponseSchema(z.object({ data: z.array(customerSchema) }));
-export type UpdateCustomerResponse = z.infer<typeof updateCustomerResponseSchema>;
 
 export const validateCustomerArgsSchema = z.object({
   code: z.string({
@@ -217,9 +202,6 @@ export const validateCustomerArgsSchema = z.object({
 });
 export type ValidateCustomerArgs = z.infer<typeof validateCustomerArgsSchema>;
 
-export const validateCustomerResponseSchema = createAPIResponseSchema(z.object({}));
-export type ValidateCustomerResponse = z.infer<typeof validateCustomerResponseSchema>;
-
 export const whitelistOrBlacklistArgsSchema = z.object({
   customer: z.string({
     invalid_type_error: 'customer must be a string',
@@ -228,9 +210,6 @@ export const whitelistOrBlacklistArgsSchema = z.object({
   risk_action: riskActionSchema.optional(),
 });
 export type WhitelistOrBlacklistArgs = z.infer<typeof whitelistOrBlacklistArgsSchema>;
-
-const whitelistOrBlacklistResponseSchema = createAPIResponseSchema(z.object({ data: customerSchema }));
-export type WhitelistOrBlacklistResponse = z.infer<typeof whitelistOrBlacklistResponseSchema>;
 
 export const deactivateAuthorizationArgsSchema = z.object({
   authorization_code: z.string({
