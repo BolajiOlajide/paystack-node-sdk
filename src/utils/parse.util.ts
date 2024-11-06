@@ -2,28 +2,39 @@ import { z } from 'zod';
 
 import { HttpResponseValidationError } from '../error/validation.error';
 
-export const parseHttpResponse = <T, U>(schema: z.ZodType<T>, data: U): U => {
+/*
+ * TODO: Currently not parsing the data because Paystack does not seem so consistent with their response objects.
+ * This will likely throw most of the time.
+ * Will revisit using this later.
+ */
+export const parseHttpResponse = <T>(schema: z.ZodType<T>, data: unknown): T => {
   const result = schema.safeParse(data);
 
-  // if (!result.success) {
-  //   // Strip unwanted properties but keep original values
-  //   const strippingSchema = z
-  //     .object(
-  //       Object.keys(schema.shape).reduce(
-  //         (acc, key) => ({
-  //           ...acc,
-  //           [key]: z.any(),
-  //         }),
-  //         {}
-  //       )
-  //     )
-  //     .strip();
+  if (!result.success) {
+    if (schema instanceof z.ZodObject) {
+      const strippingSchema = z
+        .object(
+          Object.keys(schema.shape).reduce(
+            (acc, key) => ({
+              ...acc,
+              [key]: z.any(),
+            }),
+            {}
+          )
+        )
+        .strip();
 
-  //   const strippedData = strippingSchema.parse(data);
-  //   // Decide if to throw error or just return the stripped data.
-  //   console.log('error', result.error);
-  //   // throw new HttpResponseValidationError(result.error, strippedData);
-  // }
+      const strippedData = strippingSchema.parse(data);
+      throw new HttpResponseValidationError(result.error, strippedData);
+    } else if (schema instanceof z.ZodArray) {
+      // Handle array validation
+      const strippedData = z.array(z.any()).parse(data);
+      throw new HttpResponseValidationError(result.error, strippedData);
+    }
 
-  return data;
+    // Fallback for other types
+    throw new HttpResponseValidationError(result.error, data);
+  }
+
+  return result.data;
 };
