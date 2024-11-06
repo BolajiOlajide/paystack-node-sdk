@@ -19,3 +19,6 @@ export const stateSchema = z.object({
   abbreviation: z.string(),
 });
 export type State = z.infer<typeof stateSchema>;
+
+export const countryNameSchema = z.enum(['nigeria', 'ghana', 'kenya', 'south africa']);
+export type CountryName = z.infer<typeof countryNameSchema>;

@@ -1,5 +1,5 @@
-import type { AxiosInstance } from 'axios';
-
+import { handleModuleError } from '../error';
+import type { HttpClient } from '../http';
 import type { Bank } from '../schema/bank.schema';
 import type { Country, State } from '../schema/country.schema';
 import {
@@ -18,32 +18,57 @@ import { Base } from './base.module';
 /**
  * The Miscellaneous API are supporting APIs that can be used to provide more details to other APIs.
  *
- * https://docs-v2.paystack.com/docs/api/miscellaneous/
+ * https://paystack.com/docs/api/miscellaneous/
  */
 export class MiscellaneousModule extends Base {
-  constructor(httpClient: AxiosInstance) {
+  constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
-  listCountries(): Promise<Country[]> {
-    return this.wrap(() => {
-      return this.httpClient.get<ListCountryResponse>('/country');
-    });
+  async listCountries(): Promise<Country[]> {
+    try {
+      const result = await this._get<Country[]>('/country');
+      if (result.status) {
+        return result.data;
+      }
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  listStates(args: ListStatesArgs): Promise<State[]> {
-    return this.wrap(() => {
+  async listStates(args: ListStatesArgs): Promise<State[]> {
+    try {
       listStatesArgsSchema.parse(args);
       const url = createQueryForURL('/address_verification/states', args);
-      return this.httpClient.get<ListStatesResponse>(url);
-    });
+      const result = await this._get<State[]>(url);
+      if (result.status) {
+        return result.data;
+      }
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
 
-  listBanks(args: ListBanksArgs): Promise<Bank[]> {
-    return this.wrap(() => {
+  async listBanks(args: ListBanksArgs): Promise<Bank[]> {
+    try {
       listBanksArgsSchema.parse(args);
       const url = createQueryForURL('/bank', args);
-      return this.httpClient.get<ListBanksResponse>(url);
-    });
+      console.log({ url });
+      const result = await this._get<Bank[]>(url);
+      if (result.status) {
+        return result.data;
+      }
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
   }
+  //   return this.wrap(() => {
+  //     listBanksArgsSchema.parse(args);
+  //     const url = createQueryForURL('/bank', args);
+  //     return this.httpClient.get<ListBanksResponse>(url);
+  //   });
+  // }
 }

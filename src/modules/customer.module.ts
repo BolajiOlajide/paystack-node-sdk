@@ -22,6 +22,11 @@ import { createQueryForURL } from '../utils/query.util';
 
 import { Base } from './base.module';
 
+/**
+ * The Customer API are endpoints that can be used to manage customers.
+ *
+ * https://paystack.com/docs/api/customer/
+ */
 export class CustomerModule extends Base {
   private endpoint: string = '/customer';
 

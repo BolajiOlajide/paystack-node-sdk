@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { bankSchema } from './bank.schema';
 import { createAPIResponseSchema } from './base.schema';
-import { countrySchema, stateSchema } from './country.schema';
+import { countryNameSchema, countrySchema, stateSchema } from './country.schema';
 
 const listCountryResponseSchema = createAPIResponseSchema(z.object({ data: z.array(countrySchema) }));
 export type ListCountryResponse = z.infer<typeof listCountryResponseSchema>;
@@ -20,12 +20,7 @@ const listStatesResponseSchema = createAPIResponseSchema(z.object({ data: z.arra
 export type ListStatesResponse = z.infer<typeof listStatesResponseSchema>;
 
 export const listBanksArgsSchema = z.object({
-  country: z
-    .string({
-      invalid_type_error: 'country must be a string',
-      description: 'the country from which to obtain the list of supported banks. e.g country=ghana or country=nigeria',
-    })
-    .optional(),
+  country: countryNameSchema.optional(),
   pay_with_bank_transfer: z
     .boolean({
       invalid_type_error: 'pay_with_bank_transfer must be a boolean',
