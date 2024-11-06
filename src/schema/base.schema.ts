@@ -23,20 +23,6 @@ export const metaSchema = z.object({
 
 export type Meta = z.infer<typeof metaSchema>;
 
-const apiErrorResponseSchema = z.object({
-  status: z.literal(false),
-  message: z.string(),
-});
-
-export const apiSuccessResponseSchema = z.object({
-  status: z.literal(true),
-  message: z.string(),
-  meta: metaSchema.optional(),
-});
-
-export const createAPIResponseSchema = <T extends z.AnyZodObject>(schema: T) =>
-  apiErrorResponseSchema.or(apiSuccessResponseSchema.merge(schema));
-
 export interface WithMeta<T> {
   data: T[];
   meta: Meta;

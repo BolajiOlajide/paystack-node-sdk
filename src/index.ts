@@ -2,7 +2,7 @@ import { PAYSTACK_BASE_API_URL } from './constants';
 import { HttpClient } from './http';
 import { CustomerModule } from './modules/customer.module';
 import { MiscellaneousModule } from './modules/misc.module';
-// import { PlanModule } from './modules/plan.module';
+import { PlanModule } from './modules/plan.module';
 import { paystackSchema, type PaystackArgs } from './schema/base.schema';
 
 export class Paystack {
@@ -10,7 +10,7 @@ export class Paystack {
   private baseUrl: string;
   private httpClient: HttpClient;
 
-  // public plan: PlanModule;
+  public plan: PlanModule;
   public customer: CustomerModule;
   public misc: MiscellaneousModule;
 
@@ -22,7 +22,7 @@ export class Paystack {
     this.httpClient = new HttpClient(this.baseUrl, this.secretKey);
 
     // register modules
-    // this.plan = new PlanModule(this.httpClient);
+    this.plan = new PlanModule(this.httpClient);
     this.customer = new CustomerModule(this.httpClient);
     this.misc = new MiscellaneousModule(this.httpClient);
   }

@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
-import { bankSchema } from './bank.schema';
-import { createAPIResponseSchema } from './base.schema';
-import { countryNameSchema, countrySchema, stateSchema } from './country.schema';
-
-const listCountryResponseSchema = createAPIResponseSchema(z.object({ data: z.array(countrySchema) }));
-export type ListCountryResponse = z.infer<typeof listCountryResponseSchema>;
+import { countryNameSchema } from './country.schema';
 
 export const listStatesArgsSchema = z.object({
   country: z.string({
@@ -15,9 +10,6 @@ export const listStatesArgsSchema = z.object({
   }),
 });
 export type ListStatesArgs = z.infer<typeof listStatesArgsSchema>;
-
-const listStatesResponseSchema = createAPIResponseSchema(z.object({ data: z.array(stateSchema) }));
-export type ListStatesResponse = z.infer<typeof listStatesResponseSchema>;
 
 export const listBanksArgsSchema = z.object({
   country: countryNameSchema.optional(),
@@ -59,6 +51,3 @@ export const listBanksArgsSchema = z.object({
     .optional(),
 });
 export type ListBanksArgs = z.infer<typeof listBanksArgsSchema>;
-
-const listBanksResponseSchema = createAPIResponseSchema(z.object({ data: z.array(bankSchema) }));
-export type ListBanksResponse = z.infer<typeof listBanksResponseSchema>;

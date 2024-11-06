@@ -3,11 +3,8 @@ import type { HttpClient } from '../http';
 import type { Bank } from '../schema/bank.schema';
 import type { Country, State } from '../schema/country.schema';
 import {
-  type ListCountryResponse,
   type ListStatesArgs,
   listStatesArgsSchema,
-  type ListStatesResponse,
-  type ListBanksResponse,
   type ListBanksArgs,
   listBanksArgsSchema,
 } from '../schema/misc.schema';
