@@ -75,7 +75,7 @@ export const createPlanArgsSchema = z.object({
 });
 export type CreatePlanArgs = z.infer<typeof createPlanArgsSchema>;
 
-const planSchema = z.object({
+export const planSchema = z.object({
   name: z.string(),
   interval: planIntervalSchema,
   amount: z.number().positive(),

@@ -24,7 +24,10 @@ import {
   type DeactivateAuthorizationArgs,
   deactivateAuthorizationArgsSchema,
   customerSchema,
+  validateCustomerResponseSchema,
 } from '../schema/customer.schema';
+import { transactionSchema } from '../schema/transaction.schema';
+import { parseHttpResponse } from '../utils/parse.util';
 import { createQueryForURL } from '../utils/query.util';
 import { isNonErrorResponse } from '../utils/status.util';
 
@@ -37,74 +40,78 @@ export class CustomerModule extends Base {
     super(httpClient);
   }
 
-  // create(args: CreateCustomerArgs): Promise<Customer> {
-  //   return this.wrap(() => {
-  //     createCustomerArgsSchema.parse(args);
+  async create(args: CreateCustomerArgs): Promise<Customer> {
+    try {
+      createCustomerArgsSchema.parse(args);
+      const result = await this._post<Customer, CreateCustomerArgs>(this.endpoint, args);
 
-  //     return this.httpClient.post<CreateCustomerResponse, AxiosResponse<CreateCustomerResponse>, CreateCustomerArgs>(
-  //       this.endpoint,
-  //       args
-  //     );
-  //   });
-  // }
-
-  async list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
-    const transformedArgs = listCustomerArgsSchema.parse(args || {});
-    listCustomerArgsSchema.parse(transformedArgs);
-    const url = createQueryForURL(this.endpoint, transformedArgs);
-    const result = await this.get<WithMeta<Customer>>(url);
-
-    const resultSchema = withMetaSchema(customerSchema);
-    const parsedResult = resultSchema.safeParse(result);
-
-    if (parsedResult.success) {
-      return parsedResult.data;
+      if (result.status) {
+        return result.data;
+      }
+      return Promise.reject({ message: result.message });
+    } catch (err) {
+      return Promise.reject({ message: (err as Error).message });
     }
-
-    return Promise.reject(new ValidationError(parsedResult.error.message));
   }
 
-  // get(args: GetCustomerArgs): Promise<Customer> {
-  //   return this.wrap(() => {
-  //     getCustomerArgsSchema.parse(args);
+  async list(args: ListCustomerArgs): Promise<WithMeta<Customer>> {
+    try {
+      const transformedArgs = listCustomerArgsSchema.parse(args || {});
+      const url = createQueryForURL(this.endpoint, transformedArgs);
+      const result = await this._get<WithMeta<Customer>>(url);
 
-  //     const url = `${this.endpoint}/${args.email_or_code}`;
-  //     return this.httpClient.get<GetCustomerResponse, AxiosResponse<GetCustomerResponse>>(url);
-  //   });
-  // }
+      if (result.status) {
+        return result.data;
+      }
 
-  // update(args: UpdateCustomerArgs): Promise<Customer> {
-  //   return this.wrap(() => {
-  //     updateCustomerArgsSchema.parse(args);
+      return Promise.reject({ message: result.message });
+    } catch (err) {
+      return Promise.reject({ message: (err as Error).message });
+    }
+  }
 
-  //     const { code, ...data } = args;
-  //     const url = `${this.endpoint}/${code}`;
-  //     return this.httpClient.put<
-  //       UpdateCustomerResponse,
-  //       AxiosResponse<UpdateCustomerResponse>,
-  //       Omit<UpdateCustomerArgs, 'code'>
-  //     >(url, data);
-  //   });
-  // }
+  async get(args: GetCustomerArgs): Promise<Customer> {
+    try {
+      getCustomerArgsSchema.parse(args);
+      const url = `${this.endpoint}/${args.email_or_code}`;
+      const result = await this._get<Customer>(url);
 
-  // // We don't use the wraper here because the response we need from
-  // // this endpoint is in `data.message`, regardless of whether it's
-  // // successful or not.
-  // async validate(args: ValidateCustomerArgs): Promise<string> {
-  //   try {
-  //     validateCustomerArgsSchema.parse(args);
+      if (result.status) {
+        return result.data;
+      }
 
-  //     const { code, ...rest } = args;
-  //     const url = `${this.endpoint}/${code}/identification`;
-  //     const { data, status } = await this.httpClient.post<ValidateCustomerResponse>(url, rest);
-  //     if (data.status && isNonErrorResponse(status)) {
-  //       return data.message;
-  //     }
+      return Promise.reject({ message: result.message });
+    } catch (err) {
+      return Promise.reject({ message: (err as Error).message });
+    }
+  }
 
-  //     return Promise.reject({ message: data.message });
-  //   } catch (err) {
-  //     return handleError(err);
+  async update(args: UpdateCustomerArgs): Promise<Customer> {
+    updateCustomerArgsSchema.parse(args);
+
+    const { code, ...data } = args;
+    const url = `${this.endpoint}/${code}`;
+    const result = await this._put<Customer, Omit<UpdateCustomerArgs, 'code'>>(url, data);
+
+    if (result.status) {
+      return result.data;
+    }
+
+    return Promise.reject({ message: result.message });
+  }
+
+  // async validate(args: ValidateCustomerArgs): Promise<ValidateCustomerResponse> {
+  //   validateCustomerArgsSchema.parse(args);
+
+  //   const { code, ...rest } = args;
+  //   const url = `${this.endpoint}/${code}/identification`;
+  //   const result = await this._post<ValidateCustomerResponse, Omit<ValidateCustomerArgs, 'code'>>(url, rest);
+
+  //   if (result.status) {
+  //     return result.message;
   //   }
+
+  //   return Promise.reject({ message: result.message });
   // }
 
   // whitelistOrBlacklist(args: WhitelistOrBlacklistArgs): Promise<Customer> {

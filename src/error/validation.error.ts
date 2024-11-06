@@ -13,7 +13,8 @@ export class HttpResponseValidationError extends Error {
     public readonly error: z.ZodError,
     public readonly data: unknown
   ) {
-    super('Validation failed');
-    this.name = 'ValidationError';
+    super();
+    this.name = 'HttpResponseValidationError';
+    this.message = error.message;
   }
 }

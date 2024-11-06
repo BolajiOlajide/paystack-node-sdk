@@ -217,7 +217,7 @@ export const validateCustomerArgsSchema = z.object({
 });
 export type ValidateCustomerArgs = z.infer<typeof validateCustomerArgsSchema>;
 
-const validateCustomerResponseSchema = createAPIResponseSchema(z.object({}));
+export const validateCustomerResponseSchema = createAPIResponseSchema(z.object({}));
 export type ValidateCustomerResponse = z.infer<typeof validateCustomerResponseSchema>;
 
 export const whitelistOrBlacklistArgsSchema = z.object({
