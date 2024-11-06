@@ -15,6 +15,8 @@ import {
   validateCustomerArgsSchema,
   whitelistOrBlacklistArgsSchema,
   type WhitelistOrBlacklistArgs,
+  deactivateAuthorizationArgsSchema,
+  type DeactivateAuthorizationArgs,
 } from '../schema/customer.schema';
 import { createQueryForURL } from '../utils/query.util';
 
@@ -125,22 +127,20 @@ export class CustomerModule extends Base {
     }
   }
 
-  // // We don't use the wraper here because the response we need from
-  // // this endpoint is in `data.message`, regardless of whether it's
-  // // successful or not.
-  // async deactivateAuthorization(args: DeactivateAuthorizationArgs): Promise<string> {
-  //   try {
-  //     deactivateAuthorizationArgsSchema.parse(args);
+  async deactivateAuthorization(args: DeactivateAuthorizationArgs): Promise<string> {
+    try {
+      deactivateAuthorizationArgsSchema.parse(args);
 
-  //     const url = `${this.endpoint}/deactivate_authorization`;
-  //     const { data, status } = await this.httpClient.post<ValidateCustomerResponse>(url, args);
-  //     if (data.status && isNonErrorResponse(status)) {
-  //       return data.message;
-  //     }
+      const url = `${this.endpoint}/deactivate_authorization`;
+      const result = await this._post<never, DeactivateAuthorizationArgs>(url, args);
 
-  //     return Promise.reject({ message: data.message });
-  //   } catch (err) {
-  //     return handleError(err);
-  //   }
-  // }
+      if (result.status) {
+        return result.data;
+      }
+
+      return Promise.reject(new Error(result.message));
+    } catch (err) {
+      return handleModuleError(err);
+    }
+  }
 }

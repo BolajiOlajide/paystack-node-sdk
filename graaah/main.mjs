@@ -41,11 +41,16 @@ const paystack = new Paystack({
     // });
     // console.log(validationMsg);
 
-    const customer = await paystack.customer.whitelistOrBlacklist({
-      customer: 'CUS_b4e5m4dk53c6y3y',
-      risk_action: 'allow',
+    // const customer = await paystack.customer.whitelistOrBlacklist({
+    //   customer: 'CUS_b4e5m4dk53c6y3y',
+    //   risk_action: 'allow',
+    // });
+    // console.log(customer);
+
+    const resp = await paystack.customer.deactivateAuthorization({
+      authorization_code: 'AUTH_b4e5m4dk53c6y3y',
     });
-    console.log(customer);
+    console.log(resp);
   } catch (err) {
     console.error(err);
   }
