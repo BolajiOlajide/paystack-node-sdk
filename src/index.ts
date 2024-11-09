@@ -1,6 +1,7 @@
 import { PAYSTACK_BASE_API_URL } from './constants';
 import { HttpClient } from './http';
 import { CustomerModule } from './modules/customer.module';
+import { IntegrationModule } from './modules/integration.module';
 import { MiscellaneousModule } from './modules/misc.module';
 import { PlanModule } from './modules/plan.module';
 import { RefundModule } from './modules/refund.module';
@@ -15,6 +16,8 @@ export class Paystack {
   public customer: CustomerModule;
   public misc: MiscellaneousModule;
   public refund: RefundModule;
+  public integration: IntegrationModule;
+
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
 
@@ -27,5 +30,6 @@ export class Paystack {
     this.customer = new CustomerModule(this.httpClient);
     this.misc = new MiscellaneousModule(this.httpClient);
     this.refund = new RefundModule(this.httpClient);
+    this.integration = new IntegrationModule(this.httpClient);
   }
 }
