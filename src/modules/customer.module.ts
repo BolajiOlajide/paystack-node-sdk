@@ -143,7 +143,6 @@ export class CustomerModule extends Base {
       const result = await this._post<never, DeactivateAuthorizationArgs>(url, args);
 
       if (result.status) {
-        result.data;
         return result.message;
       }
 
