@@ -71,6 +71,7 @@ export class PlanModule extends Base {
 
   async update(args: UpdatePlanArgs): Promise<string> {
     try {
+      console.log('args', args);
       updatePlanArgsSchema.parse(args);
       const { id_or_code, ...rest } = args;
       const result = await this._put<Plan, Omit<UpdatePlanArgs, 'id_or_code'>>(`${this.endpoint}/${id_or_code}`, rest);
