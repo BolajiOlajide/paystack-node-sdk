@@ -136,7 +136,11 @@ export const updateCustomerArgsSchema = z
     // This is because all the other fields asides `code` are optional, so we need
     // a way to verify that at least one field is provided for update.
     createCustomerArgsSchema.omit({ email: true }).refine((data) => Object.keys(data).length > 0, {
-      message: 'at least one field to update must be provided',
+      message: `at least one field to update must be provided. Options: [ ${Object.keys(
+        createCustomerArgsSchema.omit({ email: true }).shape
+      )
+        .map((item) => `'${item}'`)
+        .join(', ')} ]`,
     })
   );
 export type UpdateCustomerArgs = z.infer<typeof updateCustomerArgsSchema>;

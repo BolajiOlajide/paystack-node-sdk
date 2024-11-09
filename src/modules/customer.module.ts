@@ -1,6 +1,6 @@
 import { handleModuleError } from '../error';
 import type { HttpClient } from '../http';
-import { type WithMeta } from '../schema/base.schema';
+import { type Meta, type WithMeta } from '../schema/base.schema';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
@@ -52,10 +52,13 @@ export class CustomerModule extends Base {
     try {
       const transformedArgs = listCustomerArgsSchema.parse(args || {});
       const url = createQueryForURL(this.endpoint, transformedArgs);
-      const result = await this._get<WithMeta<Customer>>(url);
+      const result = await this._get<Customer[]>(url);
 
       if (result.status) {
-        return result.data;
+        return {
+          data: result.data,
+          meta: result.meta!,
+        };
       }
 
       return Promise.reject(new Error(result.message));
@@ -140,7 +143,8 @@ export class CustomerModule extends Base {
       const result = await this._post<never, DeactivateAuthorizationArgs>(url, args);
 
       if (result.status) {
-        return result.data;
+        result.data;
+        return result.message;
       }
 
       return Promise.reject(new Error(result.message));

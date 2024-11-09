@@ -12,11 +12,11 @@ const paystack = new Paystack({
     //   last_name: 'User',
     // });
 
-    // const customers = await paystack.customer.list({
-    //   per_page: 10,
-    //   page: 1,
-    // });
-    // console.log(customers);
+    const customers = await paystack.customer.list({
+      per_page: 10,
+      page: 1,
+    });
+    console.log(customers);
 
     // const customer = await paystack.customer.get({
     //   email_or_code: 'CUS_abj843xvrcwpk6v',
@@ -47,10 +47,10 @@ const paystack = new Paystack({
     // });
     // console.log(customer);
 
-    const resp = await paystack.customer.deactivateAuthorization({
-      authorization_code: 'AUTH_b4e5m4dk53c6y3y',
-    });
-    console.log(resp);
+    // const resp = await paystack.customer.deactivateAuthorization({
+    //   authorization_code: 'AUTH_b4e5m4dk53c6y3y',
+    // });
+    // console.log(resp);
   } catch (err) {
     console.error(err);
   }
