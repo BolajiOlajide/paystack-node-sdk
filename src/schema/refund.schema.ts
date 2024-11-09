@@ -41,7 +41,6 @@ export const createRefundArgsSchema = z.object({
 export type CreateRefundArgs = z.infer<typeof createRefundArgsSchema>;
 
 const baseRefundSchema = z.object({
-  updatedAt: z.string(),
   createdAt: z.string(),
   id: z.number(),
   amount: z.number(),
@@ -65,7 +64,17 @@ export const refundSchema = baseRefundSchema.extend({
   bank_reference: z.string().nullable(),
   transaction_reference: z.string(),
   reason: z.string(),
-  customer: customerSchema,
+  customer: customerSchema.pick({
+    id: true,
+    first_name: true,
+    last_name: true,
+    email: true,
+    customer_code: true,
+    phone: true,
+    international_format_phone: true,
+    metadata: true,
+    risk_action: true,
+  }),
   refund_type: z.string(),
   transaction_amount: z.number(),
   initiated_by: z.string(),
@@ -79,47 +88,50 @@ export const newRefundSchema = baseRefundSchema.extend({
   transaction: transactionSchema,
   expected_at: z.string(),
   channel: z.string().nullable(),
+  updatedAt: z.string(),
 });
 export type NewRefund = z.infer<typeof newRefundSchema>;
 
-export const listRefundsArgsSchema = z.object({
-  transaction: z
-    .string({
-      required_error: 'transaction is required',
-      description: 'The transaction reference',
-      invalid_type_error: 'transaction must be a string',
-    })
-    .optional(),
-  currency: currencySchema.optional(),
+export const listRefundsArgsSchema = z
+  .object({
+    transaction: z
+      .string({
+        required_error: 'transaction is required',
+        description: 'The transaction reference',
+        invalid_type_error: 'transaction must be a string',
+      })
+      .optional(),
+    currency: currencySchema.optional(),
 
-  from: z
-    .string({
-      required_error: 'from is required',
-      description: 'A timestamp from which to start listing refund ',
-      invalid_type_error: 'from must be a string',
-    })
-    .optional(),
-  to: z
-    .string({
-      description: 'A timestamp at which to stop listing refunds',
-      invalid_type_error: 'to must be a string',
-    })
-    .optional(),
-  perPage: z
-    .number({
-      description:
-        'Specify how many records you want to retrieve per page. If not specify we use a default value of 50.',
-      invalid_type_error: 'perPage must be a number',
-    })
-    .optional(),
-  page: z
-    .number({
-      required_error: 'page is required',
-      description: 'Specify exactly what page you want to retrieve. If not specify we use a default value of 1.',
-      invalid_type_error: 'page must be a number',
-    })
-    .optional(),
-});
+    from: z
+      .string({
+        required_error: 'from is required',
+        description: 'A timestamp from which to start listing refund ',
+        invalid_type_error: 'from must be a string',
+      })
+      .optional(),
+    to: z
+      .string({
+        description: 'A timestamp at which to stop listing refunds',
+        invalid_type_error: 'to must be a string',
+      })
+      .optional(),
+    perPage: z
+      .number({
+        description:
+          'Specify how many records you want to retrieve per page. If not specify we use a default value of 50.',
+        invalid_type_error: 'perPage must be a number',
+      })
+      .optional(),
+    page: z
+      .number({
+        required_error: 'page is required',
+        description: 'Specify exactly what page you want to retrieve. If not specify we use a default value of 1.',
+        invalid_type_error: 'page must be a number',
+      })
+      .optional(),
+  })
+  .optional();
 export type ListRefundsArgs = z.infer<typeof listRefundsArgsSchema>;
 
 export const fetchRefundArgsSchema = z.object({

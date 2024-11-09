@@ -40,10 +40,10 @@ export class RefundModule extends Base {
     }
   }
 
-  async list(args: ListRefundsArgs): Promise<WithMeta<Refund>> {
+  async list(args?: ListRefundsArgs): Promise<WithMeta<Refund>> {
     try {
       listRefundsArgsSchema.parse(args);
-      const url = createQueryForURL(this.endpoint, args);
+      const url = createQueryForURL(this.endpoint, args || {});
       const result = await this._get<Refund[]>(url);
       if (result.status) {
         return {
