@@ -116,14 +116,52 @@ export const listPlanArgsSchema = z
 export type ListPlanArgs = z.infer<typeof listPlanArgsSchema>;
 
 export const updatePlanArgsSchema = z.object({
-  id_or_code: z.string(),
-  name: z.string(),
-  amount: z.number().positive(),
+  id_or_code: z.string({
+    required_error: 'id_or_code is required',
+    invalid_type_error: 'id_or_code must be a string',
+  }),
+  name: z.string({
+    invalid_type_error: 'name must be a string',
+    description: 'The name of the plan',
+    required_error: 'name is required',
+  }),
+  amount: z
+    .number({
+      invalid_type_error: 'amount must be a number',
+      description: 'The amount to charge',
+      required_error: 'amount is required',
+    })
+    .positive({
+      message: 'amount must be greater than 0',
+    }),
   interval: planIntervalSchema,
-  description: z.string().optional(),
-  send_invoices: z.boolean().optional(),
-  send_sms: z.boolean().optional(),
-  invoice_limit: z.number().positive().optional(),
+  description: z
+    .string({
+      description: 'A description for this plan',
+      invalid_type_error: 'description must be a string',
+    })
+    .optional(),
+  send_invoices: z
+    .boolean({
+      invalid_type_error: 'send_invoices must be a boolean',
+      description: "Set to false if you don't want invoices to be sent to your customers",
+    })
+    .optional(),
+  send_sms: z
+    .boolean({
+      invalid_type_error: 'send_sms must be a boolean',
+      description: "Set to false if you don't want text messages to be sent to your customers",
+    })
+    .optional(),
+  invoice_limit: z
+    .number({
+      invalid_type_error: 'invoice_limit must be a number',
+      description: 'This indicates how many times a customer can be charged on this plan',
+    })
+    .positive({
+      message: 'invoice_limit must be greater than 0',
+    })
+    .optional(),
   currency: currencySchema.optional(),
 });
 export type UpdatePlanArgs = z.infer<typeof updatePlanArgsSchema>;
