@@ -3,6 +3,7 @@ import { HttpClient } from './http';
 import { CustomerModule } from './modules/customer.module';
 import { MiscellaneousModule } from './modules/misc.module';
 import { PlanModule } from './modules/plan.module';
+import { RefundModule } from './modules/refund.module';
 import { paystackSchema, type PaystackArgs } from './schema/base.schema';
 
 export class Paystack {
@@ -13,7 +14,7 @@ export class Paystack {
   public plan: PlanModule;
   public customer: CustomerModule;
   public misc: MiscellaneousModule;
-
+  public refund: RefundModule;
   constructor(opts: PaystackArgs) {
     paystackSchema.parse(opts);
 
@@ -25,5 +26,6 @@ export class Paystack {
     this.plan = new PlanModule(this.httpClient);
     this.customer = new CustomerModule(this.httpClient);
     this.misc = new MiscellaneousModule(this.httpClient);
+    this.refund = new RefundModule(this.httpClient);
   }
 }
