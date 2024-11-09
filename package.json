@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
   ],
   "scripts": {
     "test": "vitest run",
