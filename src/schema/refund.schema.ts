@@ -83,12 +83,14 @@ export const newRefundSchema = baseRefundSchema.extend({
 export type NewRefund = z.infer<typeof newRefundSchema>;
 
 export const listRefundsArgsSchema = z.object({
-  transaction: z.string({
-    required_error: 'transaction is required',
-    description: 'The transaction reference',
-    invalid_type_error: 'transaction must be a string',
-  }),
-  currency: currencySchema,
+  transaction: z
+    .string({
+      required_error: 'transaction is required',
+      description: 'The transaction reference',
+      invalid_type_error: 'transaction must be a string',
+    })
+    .optional(),
+  currency: currencySchema.optional(),
 
   from: z
     .string({
