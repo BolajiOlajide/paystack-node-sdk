@@ -1,11 +1,14 @@
 {
-  "name": "paystack-node",
-  "version": "0.0.1",
+  "name": "paystack-node-sdk",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
   ],
   "scripts": {
     "test": "vitest run",
@@ -15,7 +18,10 @@
     "build": "tsup",
     "prepare": "husky install",
     "check-exports": "attw --pack .",
-    "cm": "cz"
+    "cm": "cz",
+    "release": "changeset version && changeset publish",
+    "prepublishOnly": "pnpm run ci",
+    "ci": "pnpm run build && pnpm run lint && pnpm run check-exports && pnpm run test"
   },
   "keywords": [
     "paystack",
@@ -44,6 +50,7 @@
   "license": "MIT",
   "devDependencies": {
     "@arethetypeswrong/cli": "0.16.4",
+    "@changesets/cli": "2.27.9",
     "@types/node": "20.6.0",
     "@typescript-eslint/eslint-plugin": "8.11.0",
     "@typescript-eslint/parser": "8.11.0",
