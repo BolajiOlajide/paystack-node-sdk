@@ -6,7 +6,3 @@ export const httpClientSchema = z.object({
 });
 
 export type httpClientArgs = z.infer<typeof httpClientSchema>;
-
-const httpMethodSchema = z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']);
-
-export type httpMethod = z.infer<typeof httpMethodSchema>;

@@ -1,69 +1,114 @@
-import { test, expect } from 'vitest';
+import { test, expect, afterEach, describe } from 'vitest';
 
-test('PlanModule', () => {
-  expect(true).toBe(true);
+import { PAYSTACK_BASE_API_URL } from '../../constants';
+import { ValidationError } from '../../error/validation.error';
+import { mockPlan } from '../../fixtures/plan.fixture';
+import { HttpClient } from '../../http';
+import { server } from '../../mocks/server';
+import { CreatePlanArgs, UpdatePlanArgs } from '../../schema/plan.schema';
+import { PlanModule } from '../plan.module';
+
+afterEach(() => {
+  server.resetHandlers();
 });
 
-// import type { AxiosInstance } from 'axios';
-// import { mock } from 'jest-mock-extended';
+describe('PlanModule', () => {
+  const httpClient = new HttpClient(PAYSTACK_BASE_API_URL, 'sk_test_1234567890');
+  const planModule = new PlanModule(httpClient);
 
-// import { ValidationError } from '../../error/validation.error';
-// import { mockPlan } from '../../fixtures/plan.fixture';
-// import { StatusCodes } from '../../utils/status.util';
-// import Plan from '../plan.module';
+  describe('create', () => {
+    test('name is required', async () => {
+      const expected = new ValidationError('name is required');
+      await expect(planModule.create({} as CreatePlanArgs)).rejects.toEqual(expected);
+    });
 
-// jest.mock('axios');
+    test('amount is required', async () => {
+      const expected = new ValidationError('amount is required');
+      await expect(
+        planModule.create({
+          name: 'My first plan',
+        } as CreatePlanArgs)
+      ).rejects.toEqual(expected);
+    });
 
-// describe('PlanModule', () => {
-//   const mockedAxios = mock<AxiosInstance>();
-//   const axiosPostSpy = jest.spyOn(mockedAxios, 'post');
+    test('interval is required', async () => {
+      const expected = new ValidationError('interval is required');
+      await expect(
+        planModule.create({
+          name: 'My first plan',
+          amount: 10000,
+        } as CreatePlanArgs)
+      ).rejects.toEqual(expected);
+    });
 
-//   const planModule = new Plan(mockedAxios);
+    test('should create a plan', async () => {
+      const plan = await planModule.create({
+        name: 'My first plan',
+        amount: 10000,
+        interval: 'monthly',
+      });
+      expect(plan).toEqual(mockPlan);
+    });
+  });
 
-//   describe('create', () => {
-//     it('should throw error if plan amount is less than or equal to zero', async () => {
-//       const expected = new ValidationError('amount must be greater than 0');
-//       await expect(
-//         planModule.create({
-//           name: 'Plan Name',
-//           amount: -10000,
-//           interval: 'monthly',
-//         })
-//       ).rejects.toEqual(expected);
-//     });
+  describe('list', () => {
+    test('should list plans', async () => {
+      const plans = await planModule.list({});
+      expect(plans).toEqual([mockPlan]);
+    });
+  });
 
-//     it('should throw error if name is an empty string', async () => {
-//       const expected = new ValidationError('name must be a non-empty string');
-//       await expect(
-//         planModule.create({
-//           name: '',
-//           amount: 10000,
-//           interval: 'monthly',
-//         })
-//       ).rejects.toEqual(expected);
-//     });
+  describe('fetch', () => {
+    test('should fetch a plan', async () => {
+      const plan = await planModule.fetch(mockPlan.id.toString());
+      expect(plan).toEqual(mockPlan);
+    });
+  });
 
-//     it('should create plan', async () => {
-//       axiosPostSpy.mockResolvedValueOnce({
-//         status: StatusCodes.CREATED,
-//         data: {
-//           status: true,
-//           data: mockPlan,
-//         },
-//       });
-//       const plan = await planModule.create({
-//         name: 'Plan Name',
-//         amount: 10000,
-//         interval: 'monthly',
-//       });
+  describe('update', () => {
+    test('id_or_code is required', async () => {
+      const expected = new ValidationError('id_or_code is required');
+      await expect(planModule.update({} as UpdatePlanArgs)).rejects.toEqual(expected);
+    });
 
-//       expect(axiosPostSpy).toBeCalledWith('/plan', {
-//         name: 'Plan Name',
-//         amount: 10000,
-//         interval: 'monthly',
-//       });
-//       expect(axiosPostSpy).toBeCalledTimes(1);
-//       expect(plan).toEqual(mockPlan);
-//     });
-//   });
-// });
+    test('name is required', async () => {
+      const expected = new ValidationError('name is required');
+      await expect(
+        planModule.update({
+          id_or_code: mockPlan.id.toString(),
+        } as UpdatePlanArgs)
+      ).rejects.toEqual(expected);
+    });
+
+    test('amount is required', async () => {
+      const expected = new ValidationError('amount is required');
+      await expect(
+        planModule.update({
+          id_or_code: mockPlan.id.toString(),
+          name: 'My updated plan',
+        } as UpdatePlanArgs)
+      ).rejects.toEqual(expected);
+    });
+
+    test('interval is required', async () => {
+      const expected = new ValidationError('interval is required');
+      await expect(
+        planModule.update({
+          id_or_code: mockPlan.id.toString(),
+          name: 'My updated plan',
+          amount: 10000,
+        } as UpdatePlanArgs)
+      ).rejects.toEqual(expected);
+    });
+
+    test('should update a plan', async () => {
+      const response = await planModule.update({
+        id_or_code: mockPlan.id.toString(),
+        name: 'My updated plan',
+        amount: 10000,
+        interval: 'monthly',
+      });
+      expect(response).toEqual('Plan updated successfully');
+    });
+  });
+});
