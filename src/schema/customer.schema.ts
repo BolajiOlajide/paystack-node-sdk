@@ -80,6 +80,7 @@ export const customerSchema = z.object({
   identified: z.boolean().optional(),
   identifications: z.array(identificationSchema).optional(),
   metadata: z.record(z.any()).nullish(),
+  international_format_phone: z.any().nullish(),
 });
 export type Customer = z.infer<typeof customerSchema>;
 

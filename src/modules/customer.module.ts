@@ -1,6 +1,6 @@
 import { handleModuleError } from '../error';
 import type { HttpClient } from '../http';
-import { type WithMeta } from '../schema/base.schema';
+import { type Meta, type WithMeta } from '../schema/base.schema';
 import {
   type CreateCustomerArgs,
   createCustomerArgsSchema,
