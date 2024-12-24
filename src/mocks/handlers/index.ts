@@ -4,4 +4,10 @@ import { miscHandlers } from './misc.handler';
 import { planHandlers } from './plan.handler';
 import { refundHandlers } from './refund.handler';
 
-export const handlers = [...customerHandlers, ...miscHandlers, ...planHandlers, ...refundHandlers, ...integrationHandlers];
+export const handlers = [
+  ...customerHandlers,
+  ...miscHandlers,
+  ...planHandlers,
+  ...refundHandlers,
+  ...integrationHandlers,
+];
